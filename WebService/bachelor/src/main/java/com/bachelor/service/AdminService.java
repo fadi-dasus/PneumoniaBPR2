@@ -14,7 +14,6 @@ public class AdminService implements IAdminService {
 	public AdminRepository dao;
 
 	public List<Admin> getAdminByUsername(String username) {
-
 		return dao.findByUsername(username);
 	}
 
