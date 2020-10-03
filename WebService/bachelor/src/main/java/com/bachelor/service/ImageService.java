@@ -1,24 +1,27 @@
 package com.bachelor.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bachelor.dao.IImageRepository;
-import com.bachelor.dao.TestManager;
+import com.bachelor.dao.ImageRepository;
+import com.bachelor.model.Image;
 
 @Service
-public class ImageService implements IImageService {
+public class ImageService implements ImgService {
 	@Autowired
-	public IImageRepository idao;
-
-	@Autowired
-	public TestManager t;
+	public ImageRepository dao;
 
 	@Override
-	public Integer insertImage(String path) {
-		t.insertNewImage("");
-		return idao.insertImage("C:\\pic\\NORMAL2-IM-1257-0001.jpeg");
+	public Image insertImage(String path) {
 
+		return dao.save(new Image(path, "Unknown"));
+
+	}
+
+	public Optional<Image> getImageById(int id) {
+		return dao.findById(id);
 	}
 
 }

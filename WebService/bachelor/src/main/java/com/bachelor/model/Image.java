@@ -1,8 +1,5 @@
 package com.bachelor.model;
 
-import java.util.Arrays;
-import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,26 +8,26 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "image")
+@Table(name = "Image")
 public class Image {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Id")
 	private Integer Id;
 
-	@Column(name = "imageblob", columnDefinition = "varbinary(MAX)")
-	private byte[] imageblob;
+	@Column(name = "physicalPath", columnDefinition = "varchar(MAX)")
+	private String physicalPath;
 
-	@Column(name = "imageguid", columnDefinition = "uniqueidentifier ROWGUIDCOL NOT NULL UNIQUE DEFAULT NEWSEQUENTIALID()")
-	private UUID imageguid;
+	@Column(name = "status")
+	private String status;
 
 	public Image() {
 
 	}
 
-	public Image(byte[] imageblob, UUID imageguid) {
-		this.imageblob = imageblob;
-		this.imageguid = imageguid;
+	public Image(String physicalPath, String status) {
+		this.physicalPath = physicalPath;
+		this.status = status;
 	}
 
 	public Integer getId() {
@@ -41,25 +38,25 @@ public class Image {
 		Id = id;
 	}
 
-	public byte[] getImageblob() {
-		return imageblob;
+	public String getPhysicalPath() {
+		return physicalPath;
 	}
 
-	public void setImageblob(byte[] imageblob) {
-		this.imageblob = imageblob;
+	public void setPhysicalPath(String physicalPath) {
+		this.physicalPath = physicalPath;
 	}
 
-	public UUID getImageguid() {
-		return imageguid;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setImageguid(UUID imageguid) {
-		this.imageguid = imageguid;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Override
 	public String toString() {
-		return "Image [Id=" + Id + ", imageblob=" + Arrays.toString(imageblob) + ", imageguid=" + imageguid + "]";
+		return "Image [Id=" + Id + ", physicalPath=" + physicalPath + ", imageguid=" + status + "]";
 	}
 
 }

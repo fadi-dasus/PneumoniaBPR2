@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Admin")
-public class Admin  {
+@Table(name = "Customer")
+public class Customer  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,13 +22,13 @@ public class Admin  {
 	private String password;
 
 	
-	public Admin( String username, String password) {
+	public Customer( String username, String password) {
 
 		this.username = username;
 		this.password = password;
 	}
 
-	public Admin() {
+	public Customer() {
 	}
 
 	public String getUsername() {
