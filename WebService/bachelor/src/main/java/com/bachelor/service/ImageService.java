@@ -2,9 +2,7 @@ package com.bachelor.service;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,28 +37,19 @@ public class ImageService implements ImgService {
 
 	@Transactional
 	public void loadDB(Directory dir) {
-
-		dao.saveAll(getIAllImagesInThePath(dir));
+		if (getIAllImagesInThePath(dir) != null) {
+			dao.saveAll(getIAllImagesInThePath(dir));
+		} else
+			System.out.println("check file distination ");
 	}
 
 	private List<Image> getIAllImagesInThePath(Directory dir) {
-		List<String> filesInFolder = null;
-
+		List<Image> images = null;
 		try {
-			filesInFolder = Files.walk(Paths.get(dir.getPath())).filter(Files::isRegularFile).map(Path::toString)
-					.collect(Collectors.toList());
+			images = Files.walk(Paths.get(dir.getPath())).filter(Files::isRegularFile)
+					.map(p -> new Image(p.toString(), dir.getStatus())).collect(Collectors.toList());
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-
-		return getImageList(filesInFolder, dir.getStatus());
-	}
-
-	private List<Image> getImageList(List<String> filesInFolder, String status) {
-		List<Image> images = new ArrayList<Image>();
-
-		for (int i = 0; i < filesInFolder.size(); i++) {
-			images.add(new Image(filesInFolder.get(i), status));
 		}
 		return images;
 	}
