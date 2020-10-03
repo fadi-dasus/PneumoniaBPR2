@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +38,14 @@ public class ImageController {
 	public ResponseEntity<Iterable<Image>> getAllImages() {
 		Iterable<Image> img = imageService.getAllImages();
 		return new ResponseEntity<Iterable<Image>>(img, HttpStatus.OK);
+	}
+
+	@PostMapping("/loadPicturesIntoDB")
+	public ResponseEntity<String> loadDB() {
+//		System.out.println(path.toString());
+		int size = imageService.loadDB("E:\\7 semester\\BP\\dataset\\chest_xray\\chest_xray\\test\\NORMAL");
+		return new ResponseEntity<String>("the database has been loaded with" + size + " files from the provided path ",
+				HttpStatus.OK);
 	}
 
 }
