@@ -1,5 +1,6 @@
 package com.bachelor.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ public class ImageService implements ImgService {
 
 	public Optional<Image> getImageById(int id) {
 		return dao.findById(id);
+	}
+
+	public Iterable<Image> getAllImages() {
+		return dao.findAll();
 	}
 
 }

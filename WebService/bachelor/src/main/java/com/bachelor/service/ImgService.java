@@ -9,4 +9,6 @@ public interface ImgService {
 	Image insertImage(String path);
 
 	Optional<Image> getImageById(int id);
+
+	 Iterable<Image> getAllImages();
 }

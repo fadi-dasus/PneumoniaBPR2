@@ -29,9 +29,14 @@ public class ImageController {
 
 	@GetMapping("/getImage")
 	public ResponseEntity<Optional<Image>> getImageById(@RequestParam int id) {
-		System.out.println(id);
 		Optional<Image> img = imageService.getImageById(id);
 		return new ResponseEntity<Optional<Image>>(img, HttpStatus.OK);
+	}
+
+	@GetMapping("/getAllImage")
+	public ResponseEntity<Iterable<Image>> getAllImages() {
+		Iterable<Image> img = imageService.getAllImages();
+		return new ResponseEntity<Iterable<Image>>(img, HttpStatus.OK);
 	}
 
 }
