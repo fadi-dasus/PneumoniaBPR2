@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bachelor.model.Image;
+import com.bachelor.model.Path;
 import com.bachelor.service.ImageService;
 
 @RestController
@@ -41,11 +42,10 @@ public class ImageController {
 	}
 
 	@PostMapping("/loadPicturesIntoDB")
-	public ResponseEntity<String> loadDB() {
-//		System.out.println(path.toString());
-		int size = imageService.loadDB("E:\\7 semester\\BP\\dataset\\chest_xray\\chest_xray\\test\\NORMAL");
-		return new ResponseEntity<String>("the database has been loaded with" + size + " files from the provided path ",
-				HttpStatus.OK);
+	public ResponseEntity<String> loadDB(@RequestBody Path path) {
+		 imageService.loadDB(path.getPath());
+		return new ResponseEntity<String>(
+				"the database has been loaded with files from the provided path ", HttpStatus.OK);
 	}
 
 }

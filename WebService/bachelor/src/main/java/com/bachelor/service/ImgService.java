@@ -10,7 +10,7 @@ public interface ImgService {
 
 	Optional<Image> getImageById(int id);
 
-	 Iterable<Image> getAllImages();
-	 
-	 public int loadDB(String path);
+	Iterable<Image> getAllImages();
+
+	void loadDB(String path);
 }
