@@ -1,10 +1,10 @@
 package com.bachelor.model;
 
-public class Path {
+public class Directory {
 	String path;
 	String status;
 
-	public Path(String path, String status) {
+	public Directory(String path, String status) {
 		this.path = path;
 		this.status = status;
 	}

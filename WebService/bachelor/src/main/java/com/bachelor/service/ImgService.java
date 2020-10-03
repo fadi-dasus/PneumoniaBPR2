@@ -3,6 +3,7 @@ package com.bachelor.service;
 import java.util.Optional;
 
 import com.bachelor.model.Image;
+import com.bachelor.model.Directory;
 
 public interface ImgService {
 
@@ -12,5 +13,5 @@ public interface ImgService {
 
 	Iterable<Image> getAllImages();
 
-	void loadDB(String path);
+	void loadDB(Directory path);
 }

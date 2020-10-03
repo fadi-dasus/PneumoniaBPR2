@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bachelor.dao.ImageRepository;
+import com.bachelor.model.Directory;
 import com.bachelor.model.Image;
 
 @Service
@@ -37,29 +38,29 @@ public class ImageService implements ImgService {
 	}
 
 	@Transactional
-	public void loadDB(String path) {
+	public void loadDB(Directory dir) {
 
-		dao.saveAll(getIAllImagesInThePath(path));
+		dao.saveAll(getIAllImagesInThePath(dir));
 	}
 
-	private List<Image> getIAllImagesInThePath(String path) {
+	private List<Image> getIAllImagesInThePath(Directory dir) {
 		List<String> filesInFolder = null;
 
 		try {
-			filesInFolder = Files.walk(Paths.get(path)).filter(Files::isRegularFile).map(Path::toString)
+			filesInFolder = Files.walk(Paths.get(dir.getPath())).filter(Files::isRegularFile).map(Path::toString)
 					.collect(Collectors.toList());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return getImageList(filesInFolder);
+		return getImageList(filesInFolder, dir.getStatus());
 	}
 
-	private List<Image> getImageList(List<String> filesInFolder) {
+	private List<Image> getImageList(List<String> filesInFolder, String status) {
 		List<Image> images = new ArrayList<Image>();
 
 		for (int i = 0; i < filesInFolder.size(); i++) {
-			images.add(new Image(filesInFolder.get(i), "Normal"));
+			images.add(new Image(filesInFolder.get(i), status));
 		}
 		return images;
 	}
