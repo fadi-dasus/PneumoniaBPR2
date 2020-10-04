@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bachelor.dao.ImageRepository;
-import com.bachelor.model.Directory;
+import com.bachelor.model.ImageDirectory;
 import com.bachelor.model.Image;
 
 @Service
@@ -41,14 +41,14 @@ public class ImageService implements ImgService {
 	}
 
 	@Transactional
-	public void loadDB(Directory dir) {
+	public void loadDB(ImageDirectory dir) {
 		if (getIAllImagesInThePath(dir) != null) {
 			dao.saveAll(getIAllImagesInThePath(dir));
 		} else
 			System.out.println("check file distination ");
 	}
 
-	private List<Image> getIAllImagesInThePath(Directory dir) {
+	private List<Image> getIAllImagesInThePath(ImageDirectory dir) {
 		List<Image> images = null;
 		try {
 			images = Files.walk(Paths.get(dir.getPath())).filter(Files::isRegularFile)

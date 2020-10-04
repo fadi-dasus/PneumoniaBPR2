@@ -3,7 +3,7 @@ package com.bachelor.service;
 import java.util.Optional;
 
 import com.bachelor.model.Image;
-import com.bachelor.model.Directory;
+import com.bachelor.model.ImageDirectory;
 
 public interface ImgService {
 
@@ -13,7 +13,7 @@ public interface ImgService {
 
 	Iterable<Image> getAllImages();
 
-	void loadDB(Directory path);
+	void loadDB(ImageDirectory path);
 
 	Image updateStatus(Image img);
 

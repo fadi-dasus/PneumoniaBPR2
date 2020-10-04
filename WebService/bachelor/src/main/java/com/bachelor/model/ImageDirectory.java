@@ -1,12 +1,12 @@
 package com.bachelor.model;
 
-public class Directory {
+public class ImageDirectory {
 	String path;
-	String status;
+	String imageType;
 
-	public Directory(String path, String status) {
+	public ImageDirectory(String path, String status) {
 		this.path = path;
-		this.status = status;
+		this.imageType = status;
 	}
 
 	public String getPath() {
@@ -18,16 +18,16 @@ public class Directory {
 	}
 
 	public String getStatus() {
-		return status;
+		return imageType;
 	}
 
 	public void setStatus(String status) {
-		this.status = status;
+		this.imageType = status;
 	}
 
 	@Override
 	public String toString() {
-		return "Path [path=" + path + ", status=" + status + "]";
+		return "Path [path=" + path + ", imageType=" + imageType + "]";
 	}
 
 }
