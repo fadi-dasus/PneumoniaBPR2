@@ -7,15 +7,15 @@ import com.bachelor.model.ImageDirectory;
 
 public interface ImgService {
 
-	Image insertImage(String path);
-
 	Optional<Image> getImageById(int id);
 
 	Iterable<Image> getAllImages();
 
 	void loadDB(ImageDirectory path);
 
-	Image updateStatus(Image img);
+	Image updateStatus(Image img) throws Exception;
 
 	void removeAllImagesFromTheTable();
+
+	Image saubmitImage(ImageDirectory dir);
 }

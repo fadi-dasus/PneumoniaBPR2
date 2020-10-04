@@ -24,11 +24,14 @@ public class ImageController {
 	@Autowired
 	ImgService imageService;
 
-	@PostMapping("/insert")
-	public ResponseEntity<Image> insertNewImage(@RequestBody ImageDirectory dir) {
+	@PostMapping("/saubmitImage")
+	public ResponseEntity<String> saubmitImage(@RequestBody ImageDirectory dir) {
 
-		Image img = imageService.insertImage(dir.getSourceImagePath());
-		return new ResponseEntity<Image>(img, HttpStatus.OK);
+		Image img = imageService.saubmitImage(dir);
+		return new ResponseEntity<String>(
+				"thanks you will be notidfies when the prediction is ready your image Id is : "
+						+ img.getId().toString(),
+				HttpStatus.OK);
 	}
 
 	@GetMapping("/getImage")
@@ -51,7 +54,7 @@ public class ImageController {
 	}
 
 	@PutMapping("/updateStatus")
-	public ResponseEntity<Image> updateImageStatus(@RequestBody Image img) {
+	public ResponseEntity<Image> updateImageStatus(@RequestBody Image img) throws Exception {
 		Image updated = imageService.updateStatus(img);
 		return new ResponseEntity<Image>(updated, HttpStatus.OK);
 	}

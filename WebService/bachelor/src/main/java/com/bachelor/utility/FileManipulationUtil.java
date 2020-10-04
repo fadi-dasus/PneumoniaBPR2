@@ -24,4 +24,18 @@ public class FileManipulationUtil implements IFileManipulation{
 		}
 		return images;
 	}
+
+	@Override
+	public boolean moveImageToItsAppropriateDirectory(Image img) {
+	if(img.getStatus().equalsIgnoreCase("Normal")) 
+		img.setPhysicalPath(FoldersPathtUtil.normalImagesFolderPath.concat(img.getPhysicalPath().substring(img.getPhysicalPath().lastIndexOf("\\"))));
+	else 
+		img.setPhysicalPath(FoldersPathtUtil.pneumoniaImagesFolderPath.concat(img.getPhysicalPath().substring(img.getPhysicalPath().lastIndexOf("\\"))));
+	
+	System.out.println("////////////////////////");
+	System.out.println(img.getPhysicalPath());
+	System.out.println("////////////////////////");
+
+		return true;
+	}
 }
