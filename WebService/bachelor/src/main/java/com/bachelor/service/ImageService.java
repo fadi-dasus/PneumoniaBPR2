@@ -18,8 +18,6 @@ public class ImageService implements ImgService {
 	ImageRepository dao;
 	@Autowired
 	IFileManipulation fileManipulater;
-	
-
 
 	public Optional<Image> getImageById(int id) {
 		return dao.findById(id);
@@ -30,18 +28,16 @@ public class ImageService implements ImgService {
 	}
 
 	public Image updateStatus(Image img) throws Exception {
-//TODO move the file 
 		Image updatedImage = fileManipulater.moveImageToItsAppropriateDirectory(img);
-		//TODO update the new image not the old one
-		dao.update(img.getPhysicalPath(),img.getStatus(),img.getId());
-		 return updatedImage;
+		dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(), updatedImage.getId());
+		return updatedImage;
 
 	}
 
 	@Transactional
 	public void loadDB(ImageDirectory dir) {
 		// TODO choose what to do with this function
-		
+
 		System.out.println(
 				"we need to move the files to their appropriat folder based on the status or it is the user resposability to put them in the correct folder");
 		if (fileManipulater.getAllImagesInThePath(dir) != null) {
