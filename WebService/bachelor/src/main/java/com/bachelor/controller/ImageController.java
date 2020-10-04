@@ -5,8 +5,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,9 +45,21 @@ public class ImageController {
 
 	@PostMapping("/loadPicturesIntoDB")
 	public ResponseEntity<String> loadDB(@RequestBody Directory path) {
-		 imageService.loadDB(path);
-		return new ResponseEntity<String>(
-				"the database has been loaded with files from the provided path ", HttpStatus.OK);
+		imageService.loadDB(path);
+		return new ResponseEntity<String>("the database has been loaded with files from the provided path ",
+				HttpStatus.OK);
+	}
+
+	@PutMapping("/updateStatus")
+	public ResponseEntity<Image> updateImageStatus(@RequestBody Image img) {
+		Image updated = imageService.updateStatus(img);
+		return new ResponseEntity<Image>(updated, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/cleardb")
+	public ResponseEntity<String> cleanDatabaseTotally() {
+		imageService.removeAllImagesFromTheTable();
+		return new ResponseEntity<String>("Done", HttpStatus.OK);
 	}
 
 }

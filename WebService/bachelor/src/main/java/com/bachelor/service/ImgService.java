@@ -14,4 +14,8 @@ public interface ImgService {
 	Iterable<Image> getAllImages();
 
 	void loadDB(Directory path);
+
+	Image updateStatus(Image img);
+
+	void removeAllImagesFromTheTable();
 }

@@ -35,6 +35,11 @@ public class ImageService implements ImgService {
 		return dao.findAll();
 	}
 
+	public Image updateStatus(Image img) {
+		return dao.saveAndFlush(img);
+
+	}
+
 	@Transactional
 	public void loadDB(Directory dir) {
 		if (getIAllImagesInThePath(dir) != null) {
@@ -52,6 +57,11 @@ public class ImageService implements ImgService {
 			e.printStackTrace();
 		}
 		return images;
+	}
+
+	public void removeAllImagesFromTheTable() {
+		dao.deleteAll();
+
 	}
 
 }
