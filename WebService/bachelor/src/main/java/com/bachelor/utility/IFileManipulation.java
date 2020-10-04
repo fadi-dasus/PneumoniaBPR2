@@ -8,5 +8,5 @@ import com.bachelor.model.ImageDirectory;
 public interface IFileManipulation {
 	List<Image> getAllImagesInThePath(ImageDirectory dir);
 
-	boolean moveImageToItsAppropriateDirectory(Image img);
+	Image moveImageToItsAppropriateDirectory(Image img);
 }

@@ -12,8 +12,9 @@ import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
 
 @Component
-public class FileManipulationUtil implements IFileManipulation{
-
+public class FileManipulationUtil implements IFileManipulation {
+	
+	@Override
 	public List<Image> getAllImagesInThePath(ImageDirectory dir) {
 		List<Image> images = null;
 		try {
@@ -26,16 +27,31 @@ public class FileManipulationUtil implements IFileManipulation{
 	}
 
 	@Override
-	public boolean moveImageToItsAppropriateDirectory(Image img) {
-	if(img.getStatus().equalsIgnoreCase("Normal")) 
-		img.setPhysicalPath(FoldersPathtUtil.normalImagesFolderPath.concat(img.getPhysicalPath().substring(img.getPhysicalPath().lastIndexOf("\\"))));
-	else 
-		img.setPhysicalPath(FoldersPathtUtil.pneumoniaImagesFolderPath.concat(img.getPhysicalPath().substring(img.getPhysicalPath().lastIndexOf("\\"))));
-	
-	System.out.println("////////////////////////");
-	System.out.println(img.getPhysicalPath());
-	System.out.println("////////////////////////");
+	public Image moveImageToItsAppropriateDirectory(Image img) {
+		String newPath = concatinateString(img);
+		moveToTheCorrectFolder(img.getPhysicalPath(), newPath);
+		img.setPhysicalPath(newPath);
+		return img;
+	}
 
-		return true;
+	private void moveToTheCorrectFolder(String physicalPath, String newPath) {
+
+	}
+
+	private String concatinateString(Image img) {
+		if (img.getStatus().equalsIgnoreCase("Normal"))
+			return concatNormal(img.getPhysicalPath());
+		else
+			return concatPneumonia(img.getPhysicalPath());
+
+	}
+
+	private String concatPneumonia(String physicalPath) {
+		return FoldersPathtUtil.pneumoniaImagesFolderPath
+				.concat(physicalPath.substring(physicalPath.lastIndexOf("\\")));
+	}
+
+	private String concatNormal(String physicalPath) {
+		return FoldersPathtUtil.normalImagesFolderPath.concat(physicalPath.substring(physicalPath.lastIndexOf("\\")));
 	}
 }
