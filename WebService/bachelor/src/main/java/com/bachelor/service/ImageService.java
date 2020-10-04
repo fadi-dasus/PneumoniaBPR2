@@ -36,10 +36,6 @@ public class ImageService implements ImgService {
 
 	@Transactional
 	public void loadDB(ImageDirectory dir) {
-		// TODO choose what to do with this function
-
-		System.out.println(
-				"we need to move the files to their appropriat folder based on the status or it is the user resposability to put them in the correct folder");
 		if (fileManipulater.getAllImagesInThePath(dir) != null) {
 			dao.saveAll(fileManipulater.getAllImagesInThePath(dir));
 		} else
