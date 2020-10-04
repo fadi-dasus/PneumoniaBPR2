@@ -1,20 +1,20 @@
 package com.bachelor.model;
 
 public class ImageDirectory {
-	String path;
+	String sourceImagePath;
 	String imageType;
 
-	public ImageDirectory(String path, String status) {
-		this.path = path;
+	public ImageDirectory(String temporaryPath, String status) {
+		this.sourceImagePath = temporaryPath;
 		this.imageType = status;
 	}
 
-	public String getPath() {
-		return path;
+	public String getSourceImagePath() {
+		return sourceImagePath;
 	}
 
-	public void setPath(String path) {
-		this.path = path;
+	public void setSourceImagePath(String sourceImagePath) {
+		this.sourceImagePath = sourceImagePath;
 	}
 
 	public String getStatus() {
@@ -27,7 +27,7 @@ public class ImageDirectory {
 
 	@Override
 	public String toString() {
-		return "Path [path=" + path + ", imageType=" + imageType + "]";
+		return "Path [path=" + sourceImagePath + ", imageType=" + imageType + "]";
 	}
 
 }

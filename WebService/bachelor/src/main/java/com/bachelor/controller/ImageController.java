@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
-import com.bachelor.service.ImageService;
+import com.bachelor.service.ImgService;
 
 @RestController
 @RequestMapping("/bachelor/image")
 public class ImageController {
 	@Autowired
-	ImageService imageService;
+	ImgService imageService;
 
 	@PostMapping("/insert")
 	public ResponseEntity<Image> insertNewImage(@RequestBody ImageDirectory dir) {
 
-		Image img = imageService.insertImage(dir.getPath());
+		Image img = imageService.insertImage(dir.getSourceImagePath());
 		return new ResponseEntity<Image>(img, HttpStatus.OK);
 	}
 
