@@ -1,6 +1,10 @@
 package com.bachelor.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
+
+import javax.websocket.server.PathParam;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,17 +47,54 @@ public class ImageController {
 	@Operation(summary = "Get image by its Id from the database")
 
 	
-	@GetMapping("/getImage")
-	public ResponseEntity<?> getImageById(@Parameter(description = "image Id") @RequestParam int id) {
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@GetMapping("/getImage/{id}")
+	public ResponseEntity<?> getImageById(@Parameter(description = "image Id") @PathVariable Integer id) {
+		return imageService.getImageById(id).map(image->{
+			try {
+				return ResponseEntity.ok().location(new URI("/getImage/" + image.getId())).body(image);
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			}
 
-		Optional<Image> img = imageService.getImageById(id);
-		if (!img.isPresent()) {
-			return new ResponseEntity<String>("there is no image with this id:" + id, HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<Optional<Image>>(img, HttpStatus.FOUND);
+		}).orElse(ResponseEntity.notFound().build());
+
+//
+//		Optional<Image> img = imageService.getImageById(id);
+//		if (!img.isPresent()) {
+//			return new ResponseEntity<String>("there is no image with this id:" + id, HttpStatus.NOT_FOUND);
+//		}
+//		return new ResponseEntity<Optional<Image>>(img, HttpStatus.FOUND);
 
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// TODO WRITE THE TEST
 
 	@Operation(summary = "Submit an image")
@@ -64,7 +106,7 @@ public class ImageController {
 	public ResponseEntity<String> saubmitImage(
 			@Parameter(description = "Provide image directory,and the  preliminary diagnosis ") @RequestBody ImageDirectory dir) {
 		Image img = imageService.saubmitImage(dir);
-		return new ResponseEntity<String>("Image submited correctly: " + img.getId().toString(), HttpStatus.OK);
+		return new ResponseEntity<String>("Image submited correctly: " + img.getId().toString(), HttpStatus.CREATED);
 	}
 
 	// TODO WRITE THE TEST
