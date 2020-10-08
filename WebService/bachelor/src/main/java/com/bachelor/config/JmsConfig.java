@@ -1,11 +1,15 @@
 package com.bachelor.config;
 
+import javax.persistence.EntityManagerFactory;
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.transaction.ChainedTransactionManager;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.connection.CachingConnectionFactory;
@@ -13,6 +17,7 @@ import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -55,7 +60,7 @@ public class JmsConfig {
 		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
 		factory.setConnectionFactory(connectionFactory());
 		factory.setMessageConverter(jacksonJmsMessageConverter());
-		factory.setTransactionManager(jmsTransactionManager());
+//		factory.setTransactionManager(jmsTransactionManager());
 		factory.setErrorHandler(t -> {
 			LOGGER.info("Handling error in listening for messages, error: " + t.getMessage());
 		});
@@ -63,9 +68,20 @@ public class JmsConfig {
 		return factory;
 	}
 
-	@Bean
-	public PlatformTransactionManager jmsTransactionManager() {
-		return new JmsTransactionManager(connectionFactory());
-	}
+//	@Bean
+//	public PlatformTransactionManager jmsTransactionManager() {
+//		return new JmsTransactionManager(connectionFactory());
+//	}
+//	@Bean 
+//	public JpaTransactionManager jpaTransactionManager() {
+//	    JpaTransactionManager manager = new JpaTransactionManager();
+//	    return manager;
+//	}
+//	@Bean 
+//	ChainedTransactionManager chainedTransactionManager(JmsTransactionManager jmsTransactionManager, JpaTransactionManager jpaTransactionManager){
+//	    ChainedTransactionManager manager = new ChainedTransactionManager(jmsTransactionManager, jpaTransactionManager);
+//	    return manager;
+//	}
 
+	  
 }

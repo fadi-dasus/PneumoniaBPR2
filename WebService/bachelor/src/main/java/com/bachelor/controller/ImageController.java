@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
-import com.bachelor.service.ImageJMSService;
 import com.bachelor.service.ImgService;
 
 import io.swagger.v3.oas.annotations.Operation;
