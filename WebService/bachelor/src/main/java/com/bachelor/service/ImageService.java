@@ -18,6 +18,8 @@ public class ImageService implements ImgService {
 	ImageRepository dao;
 	@Autowired
 	IFileManipulation fileManipulater;
+	@Autowired
+	ImageJMSService jms;
 
 	public Optional<Image> getImageById(int id) {
 		return dao.findById(id);
@@ -48,7 +50,8 @@ public class ImageService implements ImgService {
 	}
 
 	public Image saubmitImage(ImageDirectory dir) {
-		// TODO send a message to the queue
+		//TODO update the sending message to a directory instead of image 
+		jms.send(new Image(1,"E:\\7 semester\\BP\\dataset","Normal"));
 		System.out.println("we will notify the ML with the path in here");
 
 		return dao.save(new Image(FoldersPathtUtil.temporaryFolderDestination.concat(dir.getSourceImagePath()),

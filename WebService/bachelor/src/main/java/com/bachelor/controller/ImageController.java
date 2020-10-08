@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
+import com.bachelor.service.ImageJMSService;
 import com.bachelor.service.ImgService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +31,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class ImageController {
 	@Autowired
 	ImgService imageService;
+	
 
 	@Operation(summary = "Submit an image to be validated as Pneumonia or Normal")
 	@ApiResponses(value = {
