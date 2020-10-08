@@ -9,8 +9,9 @@ import com.bachelor.model.Image;
 public class Receiver {
 
 	@JmsListener(destination = "img")
-	public void receiveMessage(Image order) {
-		System.out.println("Order Recieved = " + order);
+	public void receiveMessage(Image img) {
+		System.out.println("Image Recieved = " + img);
+//		throw new RuntimeException();
 	}
 
 }

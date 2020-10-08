@@ -25,7 +25,7 @@ public class FoldersSettupController {
 	@Operation(summary = "Get all the directories used for saving images")
 	@GetMapping("/getFoldersPath")
 	public ResponseEntity<String> insertNewImage() {
-		jms.send(new Image(null,"asd","fsfaf"));
+		jms.send(new Image(1,"E:\\7 semester\\BP\\dataset","Normal"));
 		return new ResponseEntity<String>(foldersPathtUtil.toString(), HttpStatus.OK);
 	}
 
