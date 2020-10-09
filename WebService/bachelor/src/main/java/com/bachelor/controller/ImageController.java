@@ -2,6 +2,7 @@ package com.bachelor.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bachelor.model.Image;
@@ -31,54 +33,30 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RestController
 @RequestMapping("/bachelor/image")
 public class ImageController {
-	
 
-	
 	@Autowired
 	ImgService imageService;
+
+	@Autowired
+	ImageControllerUtil imgUtil;
 	private static final Logger logger = LogManager.getLogger(ImageController.class);
 
-	// TODO Write a Test 
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Image has been found", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = Image.class)) }),
-			@ApiResponse(responseCode = "404", description = "Image not found", content = @Content) })
+	// TODO Write a Test
 	@Operation(summary = "Get image by its Id from the database")
-
 	@GetMapping("/getImage/{id}")
-	public ResponseEntity<?> getImageById(@Parameter(description = "image Id") @PathVariable Integer id) {
-		return imageService.getImageById(id).map(image->{
-			try {
-				return ResponseEntity.ok().location(new URI("/getImage/" + image.getId())).body(image);
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-			}
-
-		}).orElse(ResponseEntity.notFound().build());
+	public ResponseEntity<?> getImageById(@PathVariable Integer id) {
+		Optional<Image> img = imageService.getImageById(id);
+		return imgUtil.getImageByIdResponseBuilder(img);
 	}
-	
-	
-	
-	// TODO Write a Test 
-	@Operation(summary = "Submit an image")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "The image has been submitted successfully", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = Image.class)) }),
-			@ApiResponse(responseCode = "400", description = "Invalid directory", content = @Content) })
+
+	@Operation(summary = "Insert a new image, it accepts image directory,and the  preliminary diagnosis")
 	@PostMapping("/saubmitImage")
-	public ResponseEntity<String> saubmitImage(
-			@Parameter(description = "Provide image directory,and the  preliminary diagnosis ") @RequestBody ImageDirectory dir) {
-		Image img = imageService.saubmitImage(dir);
-		return new ResponseEntity<String>("Image submited correctly: " + img.getId().toString(), HttpStatus.CREATED);
+	public ResponseEntity<?> saubmitImage(@RequestBody Image image) {
+
+		Image img = imageService.saubmitImage(image);
+		return imgUtil.submitImageResponseBuilder(img);
 	}
 
-	// TODO Write a Test 
-
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Images has been found", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = Image.class)) }),
-			@ApiResponse(responseCode = "404", description = "database is empty", content = @Content) })
 	@Operation(summary = "Get all images from the database")
 	@GetMapping("/getAllImage")
 	public ResponseEntity<Iterable<Image>> getAllImages() {
@@ -86,21 +64,17 @@ public class ImageController {
 		return new ResponseEntity<Iterable<Image>>(img, HttpStatus.OK);
 	}
 
-	// TODO Write a Test 
+	// TODO Write a Test
 
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "database has been loaded successfully", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = Image.class)) }) })
 	@Operation(summary = "Insert all images from a specific directory into the database in one go, Note: images with unknown status must be submitted individually")
 	@PostMapping("/loadPicturesIntoDB")
-	public ResponseEntity<String> loadDB(
-			@Parameter(description = "Provide the directory where the images can be found and make sure to specify the status for each directory i.e. Pneumonia or Normal") @RequestBody ImageDirectory path) {
+	public ResponseEntity<String> loadDB(@RequestBody ImageDirectory path) {
 		imageService.loadDB(path);
-		return new ResponseEntity<String>("the database has been loaded with files from the provided path ",
+		return new ResponseEntity<String>("the database has been loaded with all the files from the provided path ",
 				HttpStatus.OK);
 	}
 
-	// TODO Write a Test 
+	// TODO Write a Test
 
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Images has been found", content = {
@@ -111,12 +85,12 @@ public class ImageController {
 	public ResponseEntity<Image> updateImageStatus(
 			@Parameter(description = "Provide the image after the prediction process") @RequestBody Image img)
 			throws Exception {
-		//TODO Match the file, using etag
+		// TODO Match the file, using etag
 		Image updated = imageService.updateStatus(img);
 		return new ResponseEntity<Image>(updated, HttpStatus.OK);
 	}
 
-	// TODO Write a Test 
+	// TODO Write a Test
 
 	@ApiResponse(responseCode = "200", description = "Database has no records", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = Image.class)) })

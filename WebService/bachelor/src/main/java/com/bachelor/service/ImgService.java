@@ -17,5 +17,5 @@ public interface ImgService {
 
 	void removeAllImagesFromTheTable();
 
-	Image saubmitImage(ImageDirectory dir);
+	Image saubmitImage(Image img);
 }
