@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.bachelor.controller.ImageController;
 import com.bachelor.dao.ImageRepository;
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
@@ -14,6 +18,8 @@ import com.bachelor.utility.IFileManipulation;
 
 @Service
 public class ImageService implements ImgService {
+	private static final Logger logger = LogManager.getLogger(ImageController.class);
+
 	@Autowired
 	ImageRepository dao;
 	@Autowired
@@ -41,7 +47,8 @@ public class ImageService implements ImgService {
 		if (fileManipulater.getAllImagesInThePath(dir) != null) {
 			dao.saveAll(fileManipulater.getAllImagesInThePath(dir));
 		} else
-			System.out.println("check file distination ");
+			logger.info("check file distination");
+
 	}
 
 	public void removeAllImagesFromTheTable() {
@@ -50,9 +57,8 @@ public class ImageService implements ImgService {
 	}
 
 	public Image saubmitImage(ImageDirectory dir) {
-		// TODO update the sending message to a directory instead of image
 		jms.send(new Image(1, "E:\\7 semester\\BP\\dataset", "Normal"));
-		System.out.println("we will notify the ML with the path in here");
+		logger.info("we will notify the ML with the path in here");
 
 		return dao.save(new Image(FoldersPathtUtil.temporaryFolderDestination.concat(dir.getSourceImagePath()),
 				dir.getStatus()));
