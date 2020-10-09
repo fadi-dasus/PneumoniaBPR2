@@ -41,9 +41,10 @@ import com.bachelor.service.ImgService;
 @AutoConfigureMockMvc
 public class ImageControllerTest {
 
+	
+	
 	@MockBean
 	private ImgService service;
-
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -51,18 +52,21 @@ public class ImageControllerTest {
 	@DisplayName("GET /Image/1 - Found")
 	void testGetImageIdFound() throws Exception {
 		// Setup our mocked service
-		Image mockProduct = new Image(1, "Path", "Normal");
-        doReturn(Optional.of(mockProduct)).when(service).getImageById(1);
+		Image mockImage = new Image(1, "mockPath", "Normal");
+        doReturn(Optional.of(mockImage)).when(service).getImageById(1);
 
 		// Execute the GET request
         mockMvc.perform(get("/getImage/{id}", 1).accept(MediaType.APPLICATION_JSON_UTF8))
 
 				// Validate the response code and content type
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
-
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(header().string(HttpHeaders.LOCATION, "/getImage/1"))
+                
 				// Validate the returned fields
-//				.andExpect(jsonPath("$.physicalPath", is("Path")));
-//				.andExpect(jsonPath("$.status", is("Normal")));
+				.andExpect(jsonPath("$.physicalPath", is("mockPath")))
+				.andExpect(jsonPath("$.id", is(1)))
+				.andExpect(jsonPath("$.status", is("Normal")));
+
 	}
 	
 //	

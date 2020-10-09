@@ -2,9 +2,6 @@ package com.bachelor.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Optional;
-
-import javax.websocket.server.PathParam;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bachelor.model.Image;
@@ -39,29 +35,13 @@ public class ImageController {
 	ImgService imageService;
 	private static final Logger logger = LogManager.getLogger(ImageController.class);
 
-	// TODO WRITE THE TEST
+	// TODO Write a Test 
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "302", description = "Image has been found", content = {
+			@ApiResponse(responseCode = "200", description = "Image has been found", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = Image.class)) }),
 			@ApiResponse(responseCode = "404", description = "Image not found", content = @Content) })
 	@Operation(summary = "Get image by its Id from the database")
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@GetMapping("/getImage/{id}")
 	public ResponseEntity<?> getImageById(@Parameter(description = "image Id") @PathVariable Integer id) {
 		return imageService.getImageById(id).map(image->{
@@ -73,30 +53,11 @@ public class ImageController {
 			}
 
 		}).orElse(ResponseEntity.notFound().build());
-
-//
-//		Optional<Image> img = imageService.getImageById(id);
-//		if (!img.isPresent()) {
-//			return new ResponseEntity<String>("there is no image with this id:" + id, HttpStatus.NOT_FOUND);
-//		}
-//		return new ResponseEntity<Optional<Image>>(img, HttpStatus.FOUND);
-
 	}
-
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// TODO WRITE THE TEST
-
+	// TODO Write a Test 
 	@Operation(summary = "Submit an image")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "The image has been submitted successfully", content = {
@@ -109,7 +70,7 @@ public class ImageController {
 		return new ResponseEntity<String>("Image submited correctly: " + img.getId().toString(), HttpStatus.CREATED);
 	}
 
-	// TODO WRITE THE TEST
+	// TODO Write a Test 
 
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Images has been found", content = {
@@ -122,7 +83,7 @@ public class ImageController {
 		return new ResponseEntity<Iterable<Image>>(img, HttpStatus.OK);
 	}
 
-	// TODO WRITE THE TEST
+	// TODO Write a Test 
 
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "database has been loaded successfully", content = {
@@ -136,7 +97,7 @@ public class ImageController {
 				HttpStatus.OK);
 	}
 
-	// TODO WRITE THE TEST
+	// TODO Write a Test 
 
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Images has been found", content = {
@@ -147,11 +108,12 @@ public class ImageController {
 	public ResponseEntity<Image> updateImageStatus(
 			@Parameter(description = "Provide the image after the prediction process") @RequestBody Image img)
 			throws Exception {
+		//TODO Match the file, using etag
 		Image updated = imageService.updateStatus(img);
 		return new ResponseEntity<Image>(updated, HttpStatus.OK);
 	}
 
-	// TODO WRITE THE TEST
+	// TODO Write a Test 
 
 	@ApiResponse(responseCode = "200", description = "Database has no records", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = Image.class)) })
