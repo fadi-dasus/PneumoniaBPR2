@@ -145,6 +145,23 @@ public class ImageControllerTest {
 	                .andExpect(status().isConflict());
 	    }
 	
+	   
+	   @Test
+	    @DisplayName("PUT /product/1 - Not Found")
+	    void testImagePutNotFound() throws Exception {
+	        // Setup mocked service
+			Image puttImage = new Image(1,"mockPath", "Normal");
+	        doReturn(Optional.empty()).when(service).getImageById(1);
+
+	        mockMvc.perform(put("/bachelor/image/updateStatus")
+	                .contentType(MediaType.APPLICATION_JSON)
+	                .header(HttpHeaders.IF_MATCH, 1)
+	                .content(asJsonString(puttImage)))
+
+	                // Validate the response code and content type
+	                .andExpect(status().isNotFound());
+	    }
+
 	
 	
 	
