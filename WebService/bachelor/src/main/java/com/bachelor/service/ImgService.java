@@ -17,7 +17,7 @@ public interface ImgService {
 
 //	Image update(Image img) throws NoSuchFileException ;
 	
-	Image update(Image img);
+	boolean update(Image img);
 
 	void removeAllImagesFromTheTable();
 

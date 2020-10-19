@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -95,60 +96,36 @@ public class ImageControllerTest {
 				.andExpect(jsonPath("$.status", is("Normal"))).andExpect(jsonPath("$.version", is(1)));
 	}
 
-//	
-//	 @Test
-//	    @DisplayName("PUT /product/1 - Version Mismatch")
-//	    void testProductPutVersionMismatch() throws Exception {
-//	        // Setup mocked service
-//	        Product putProduct = new Product("Product Name", 10);
-//	        Product mockProduct = new Product(1, "Product Name", 10, 2);
-//	        doReturn(Optional.of(mockProduct)).when(service).findById(1);
-//	        doReturn(true).when(service).update(any());
-//
-//	        mockMvc.perform(put("/product/{id}", 1)
-//	                .contentType(MediaType.APPLICATION_JSON)
-//	                .header(HttpHeaders.IF_MATCH, 1)
-//	                .content(asJsonString(putProduct)))
-//
-//	                // Validate the response code and content type
-//	                .andExpect(status().isConflict());
-//	    }
+	@Test
+    @DisplayName("PUT /image/1 - Success")
+    void testImagePutSuccess() throws Exception {
+        // Setup mocked service
+    	Image puttImage = new Image(1,"mockPath", "Normal");
+		Image mockImage = new Image(1, "mockPath", "Normal", 1);
+        doReturn(Optional.of(mockImage)).when(service).getImageById(1);
+        doReturn(true).when(service).update(any());
 
-//	    @Test
-//	    @DisplayName("PUT /product/1 - Not Found")
-//	    void testProductPutNotFound() throws Exception {
-//	        // Setup mocked service
-//	        Product putProduct = new Product("Product Name", 10);
-//	        doReturn(Optional.empty()).when(service).findById(1);
-//
-//	        mockMvc.perform(put("/product/{id}", 1)
-//	                .contentType(MediaType.APPLICATION_JSON)
-//	                .header(HttpHeaders.IF_MATCH, 1)
-//	                .content(asJsonString(putProduct)))
-//
-//	                // Validate the response code and content type
-//	                .andExpect(status().isNotFound());
-//	    }
-//
-//	    @Test
-//	    @DisplayName("DELETE /product/1 - Success")
-//	    void testProductDeleteSuccess() throws Exception {
-//	        // Setup mocked product
-//	        Product mockProduct = new Product(1, "Product Name", 10, 1);
-//
-//	        // Setup the mocked service
-//	        doReturn(Optional.of(mockProduct)).when(service).findById(1);
-//	        doReturn(true).when(service).delete(1);
-//
-//	        // Execute our DELETE request
-//	        mockMvc.perform(delete("/product/{id}", 1))
-//	                .andExpect(status().isOk());
-//	    }
-//	
-//	
-//	
-	
-	
+        mockMvc.perform(put("/bachelor/image/updateStatus")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.IF_MATCH, 1)
+                .content(asJsonString(puttImage)))
+
+                // Validate the response code and content type
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+
+                // Validate the headers
+                .andExpect(header().string(HttpHeaders.ETAG, "\"2\""))
+                .andExpect(header().string(HttpHeaders.LOCATION, "/getImage/1"))
+
+                // Validate the returned fields
+        
+    	.andExpect(jsonPath("$.id", is(1)))
+    	.andExpect(jsonPath("$.physicalPath", is("mockPath")))
+		.andExpect(jsonPath("$.status",
+    	is("Normal"))).andExpect(jsonPath("$.version", is(2)));
+
+    }
 	
 	
 	@Test

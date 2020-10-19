@@ -83,25 +83,6 @@ public class ImageController {
 	@PutMapping("/updateStatus")
 	@Operation(summary = updateStatusSummary)
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public ResponseEntity<?> updateImageStatus(@RequestBody Image image,@RequestHeader("If-Match") Integer ifMatch) {
 		Optional<Image> existingImage = imageService.getImageById(image.getId());
 	      return existingImage.map(p -> {
@@ -117,7 +98,7 @@ public class ImageController {
 
 	            try {
 	                // Update the product and return an ok response
-	                if (imageService.update(p)!=null) {
+	                if (imageService.update(p)) {
 	                    return ResponseEntity.ok()
 	                            .location(new URI("/getImage/" + p.getId()))
 	                            .eTag(Integer.toString(p.getVersion()))

@@ -34,16 +34,19 @@ public class ImageService implements ImgService {
 		return dao.findAll();
 	}
 
-	public Image update(Image img)  {
-		Image updatedImage = null;
+	public boolean update(Image img) {
+		boolean flag = false;
 		try {
-			updatedImage  = fileManipulater.moveImageToItsAppropriateDirectory(img);
-			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(),updatedImage.getVersion(),updatedImage.getId());
-			
+			Image updatedImage = fileManipulater.moveImageToItsAppropriateDirectory(img);
+			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(), updatedImage.getVersion(),
+					updatedImage.getId());
+			flag = true;
+
 		} catch (Exception e) {
+			flag =false;
 			System.out.println(e);
 		}
-		return updatedImage;
+		return flag;
 
 	}
 
@@ -69,7 +72,5 @@ public class ImageService implements ImgService {
 		jms.send(image);
 		return image;
 	}
-
-
 
 }
