@@ -1,5 +1,6 @@
 package com.bachelor.controller;
 
+import java.nio.file.NoSuchFileException;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -41,7 +42,6 @@ public class ImageController {
 	@Autowired
 	ImageControllerUtil imgUtil;
 
-	
 	@Operation(summary = getImageSummary)
 	@GetMapping("/getImage/{id}")
 	public ResponseEntity<?> getImageById(@PathVariable Integer id) {
@@ -51,13 +51,12 @@ public class ImageController {
 
 	@Operation(summary = saubmitImageSummary)
 	@PostMapping("/saubmitImage")
-
 	public ResponseEntity<?> saubmitImage(@RequestBody Image image) {
-		
 		Image img = imageService.saubmitImage(image);
 		return imgUtil.submitImageResponseBuilder(img);
 	}
-	
+
+	// TODO Write a Test
 
 	@Operation(summary = "Get all images from the database")
 	@GetMapping("/getAllImage")
@@ -84,12 +83,17 @@ public class ImageController {
 			@ApiResponse(responseCode = "404", description = "did not find an image with this Id", content = @Content), })
 	@PutMapping("/updateStatus")
 	@Operation(summary = updateStatusSummary)
-	public ResponseEntity<Image> updateImageStatus(
-			@Parameter(description = "Provide the image after the prediction process") @RequestBody Image img)
-			throws Exception {
+	public ResponseEntity<?> updateImageStatus(@RequestBody Image img) {
 		// TODO Match the file, using etag
-		Image updated = imageService.updateStatus(img);
-		return new ResponseEntity<Image>(updated, HttpStatus.OK);
+		Image updated;
+		try {
+			updated = imageService.updateStatus(img);
+			return new ResponseEntity<Image>(updated, HttpStatus.OK);
+		} catch (NoSuchFileException e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("no such file in the provided directory", HttpStatus.OK);
+		}
+		
 	}
 
 	// TODO Write a Test

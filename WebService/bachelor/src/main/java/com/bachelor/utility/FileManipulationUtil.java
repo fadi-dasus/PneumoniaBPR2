@@ -2,6 +2,7 @@ package com.bachelor.utility;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class FileManipulationUtil implements IFileManipulation {
 	}
 
 	@Override
-	public Image moveImageToItsAppropriateDirectory(Image img) {
+	public Image moveImageToItsAppropriateDirectory(Image img) throws NoSuchFileException {
 		String newPath = concatinateString(img);
 		moveToTheCorrectFolder(img.getPhysicalPath(), newPath);
 		img.setPhysicalPath(newPath);
@@ -38,8 +39,10 @@ public class FileManipulationUtil implements IFileManipulation {
 		try {
 			Files.move(Paths.get(oldPath), Paths.get(newPath));
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
 	private String concatinateString(Image img) {

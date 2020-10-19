@@ -11,7 +11,7 @@ import com.bachelor.model.Image;
 public interface ImageRepository extends JpaRepository<Image, Integer> {
 	@Modifying
 	@Transactional
-	@Query(value = "UPDATE image SET physical_path =?, status = ? WHERE Id =?", nativeQuery = true)
-	void update(String physical_path, String status, int Id);
+	@Query(value = "UPDATE image SET physical_path =?, status = ?,version=? WHERE Id =?", nativeQuery = true)
+	void update(String physical_path, String status,Integer version, int Id);
 	
 }

@@ -1,5 +1,7 @@
 package com.bachelor.service;
 
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +37,15 @@ public class ImageService implements ImgService {
 		return dao.findAll();
 	}
 
-	public Image updateStatus(Image img) throws Exception {
-		Image updatedImage = fileManipulater.moveImageToItsAppropriateDirectory(img);
-		dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(), updatedImage.getId());
+	public Image updateStatus(Image img) throws NoSuchFileException {
+		Image updatedImage = null;
+		try {
+			updatedImage  = fileManipulater.moveImageToItsAppropriateDirectory(img);
+			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(),updatedImage .getId(),updatedImage.getVersion());
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		return updatedImage;
 
 	}
