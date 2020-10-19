@@ -48,5 +48,43 @@ public class ImageControllerUtil {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
+	
+	
+	
+	 ResponseEntity<?> updateImageHelper(Image image, Integer ifMatch, Optional<Image> existingImage) {
+		return existingImage.map(p -> {
+	            // Compare the etags
+	    	  System.out.println(p.getVersion().equals(ifMatch));
+	            if (!p.getVersion().equals(ifMatch)) {
+	                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	            }
+	            // Update the image
+	            p.setPhysicalPath(image.getPhysicalPath());
+	            p.setStatus(image.getStatus());
+	            p.setVersion(p.getVersion() + 1);	          
 
+	            try {
+	                // Update the product and return an ok response
+	                if (imageService.update(p)) {
+	                    return ResponseEntity.ok()
+	                            .location(new URI("/getImage/" + p.getId()))
+	                            .eTag(Integer.toString(p.getVersion()))
+	                            .body(p);
+	                } else {
+	                    return ResponseEntity.notFound().build();
+	                }
+	            } catch (URISyntaxException e) {
+	                // An error occurred trying to create the location URI, return an error
+	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	            }
+
+	        }
+	      ).orElse(ResponseEntity.notFound().build());
+	}
+	
+	
+	
+	
+	
+	
 }

@@ -1,8 +1,5 @@
 package com.bachelor.controller;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.NoSuchFileException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +20,6 @@ import com.bachelor.model.ImageDirectory;
 import com.bachelor.service.ImgService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/bachelor/image")
@@ -35,7 +28,7 @@ public class ImageController {
 	final String updateStatusSummary = "Update an image and move it from the temporary directory to its final destination based on its predicted status ";
 	final String saubmitImageSummary = "Insert a new image, it accepts image directory,and the  preliminary diagnosis";
 	final String loadDbSummary = "Insert all images from a specific directory into the database in one go, Note: images with unknown status must be submitted individually";
-
+	final String deleteSummary = "REMOVE ALL  DATA FROM THE DATABASE";
 	@Autowired
 	ImgService imageService;
 	@Autowired
@@ -62,7 +55,6 @@ public class ImageController {
 		return new ResponseEntity<Iterable<Image>>(img, HttpStatus.FOUND);
 	}
 
-
 	@Operation(summary = loadDbSummary)
 	@PostMapping("/loadPicturesIntoDB")
 	public ResponseEntity<String> loadDB(@RequestBody ImageDirectory path) {
@@ -71,87 +63,17 @@ public class ImageController {
 				HttpStatus.OK);
 	}
 
-	
-
-	
-	
-
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Images has been found", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = Image.class)) }),
-			@ApiResponse(responseCode = "404", description = "did not find an image with this Id", content = @Content), })
 	@PutMapping("/updateStatus")
 	@Operation(summary = updateStatusSummary)
-	
-	public ResponseEntity<?> updateImageStatus(@RequestBody Image image,@RequestHeader("If-Match") Integer ifMatch) {
+
+	public ResponseEntity<?> updateImageStatus(@RequestBody Image image, @RequestHeader("If-Match") Integer ifMatch) {
 		Optional<Image> existingImage = imageService.getImageById(image.getId());
-	      return existingImage.map(p -> {
-	            // Compare the etags
-	    	  System.out.println(p.getVersion().equals(ifMatch));
-	            if (!p.getVersion().equals(ifMatch)) {
-	                return ResponseEntity.status(HttpStatus.CONFLICT).build();
-	            }
-	            // Update the image
-	            p.setPhysicalPath(image.getPhysicalPath());
-	            p.setStatus(image.getStatus());
-	            p.setVersion(p.getVersion() + 1);	          
+		return imgUtil.updateImageHelper(image, ifMatch, existingImage);
 
-	            try {
-	                // Update the product and return an ok response
-	                if (imageService.update(p)) {
-	                    return ResponseEntity.ok()
-	                            .location(new URI("/getImage/" + p.getId()))
-	                            .eTag(Integer.toString(p.getVersion()))
-	                            .body(p);
-	                } else {
-	                    return ResponseEntity.notFound().build();
-	                }
-	            } catch (URISyntaxException e) {
-	                // An error occurred trying to create the location URI, return an error
-	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	            }
-
-	        }
-	      ).orElse(ResponseEntity.notFound().build());
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-//		
-//		Image updated;
-//		try {
-//			updated = imageService.updateStatus(img);
-//			return new ResponseEntity<Image>(updated, HttpStatus.OK);
-//		} catch (NoSuchFileException e) {
-//			e.printStackTrace();
-//			return new ResponseEntity<String>("no such file in the provided directory", HttpStatus.OK);
-//		}
-		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
-	// TODO Write a Test
-	@ApiResponse(responseCode = "200", description = "Database has no records", content = {
-			@Content(mediaType = "application/json", schema = @Schema(implementation = Image.class)) })
 	@DeleteMapping("/cleardb")
-	@Operation(summary = "REMOVE ALL THE DATA FROM THE DATABASE")
+	@Operation(summary = deleteSummary)
 	public ResponseEntity<String> cleanDatabaseTotally() {
 		imageService.removeAllImagesFromTheTable();
 		return new ResponseEntity<String>("Done", HttpStatus.OK);
