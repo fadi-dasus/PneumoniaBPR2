@@ -1,15 +1,12 @@
 package com.bachelor.service;
 
-import java.io.IOException;
-import java.nio.file.NoSuchFileException;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bachelor.controller.ImageController;
 import com.bachelor.dao.ImageRepository;
@@ -37,11 +34,11 @@ public class ImageService implements ImgService {
 		return dao.findAll();
 	}
 
-	public Image updateStatus(Image img) throws NoSuchFileException {
+	public Image update(Image img)  {
 		Image updatedImage = null;
 		try {
 			updatedImage  = fileManipulater.moveImageToItsAppropriateDirectory(img);
-			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(),updatedImage .getId(),updatedImage.getVersion());
+			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(),updatedImage.getVersion(),updatedImage.getId());
 			
 		} catch (Exception e) {
 			System.out.println(e);
@@ -72,5 +69,7 @@ public class ImageService implements ImgService {
 		jms.send(image);
 		return image;
 	}
+
+
 
 }

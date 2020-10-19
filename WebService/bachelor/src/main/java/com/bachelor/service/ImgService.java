@@ -15,7 +15,9 @@ public interface ImgService {
 
 	void loadDB(ImageDirectory path);
 
-	Image updateStatus(Image img) throws NoSuchFileException ;
+//	Image update(Image img) throws NoSuchFileException ;
+	
+	Image update(Image img);
 
 	void removeAllImagesFromTheTable();
 

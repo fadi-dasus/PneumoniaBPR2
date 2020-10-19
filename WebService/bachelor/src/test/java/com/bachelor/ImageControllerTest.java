@@ -95,22 +95,77 @@ public class ImageControllerTest {
 				.andExpect(jsonPath("$.status", is("Normal"))).andExpect(jsonPath("$.version", is(1)));
 	}
 
+//	
+//	 @Test
+//	    @DisplayName("PUT /product/1 - Version Mismatch")
+//	    void testProductPutVersionMismatch() throws Exception {
+//	        // Setup mocked service
+//	        Product putProduct = new Product("Product Name", 10);
+//	        Product mockProduct = new Product(1, "Product Name", 10, 2);
+//	        doReturn(Optional.of(mockProduct)).when(service).findById(1);
+//	        doReturn(true).when(service).update(any());
+//
+//	        mockMvc.perform(put("/product/{id}", 1)
+//	                .contentType(MediaType.APPLICATION_JSON)
+//	                .header(HttpHeaders.IF_MATCH, 1)
+//	                .content(asJsonString(putProduct)))
+//
+//	                // Validate the response code and content type
+//	                .andExpect(status().isConflict());
+//	    }
+
+//	    @Test
+//	    @DisplayName("PUT /product/1 - Not Found")
+//	    void testProductPutNotFound() throws Exception {
+//	        // Setup mocked service
+//	        Product putProduct = new Product("Product Name", 10);
+//	        doReturn(Optional.empty()).when(service).findById(1);
+//
+//	        mockMvc.perform(put("/product/{id}", 1)
+//	                .contentType(MediaType.APPLICATION_JSON)
+//	                .header(HttpHeaders.IF_MATCH, 1)
+//	                .content(asJsonString(putProduct)))
+//
+//	                // Validate the response code and content type
+//	                .andExpect(status().isNotFound());
+//	    }
+//
+//	    @Test
+//	    @DisplayName("DELETE /product/1 - Success")
+//	    void testProductDeleteSuccess() throws Exception {
+//	        // Setup mocked product
+//	        Product mockProduct = new Product(1, "Product Name", 10, 1);
+//
+//	        // Setup the mocked service
+//	        doReturn(Optional.of(mockProduct)).when(service).findById(1);
+//	        doReturn(true).when(service).delete(1);
+//
+//	        // Execute our DELETE request
+//	        mockMvc.perform(delete("/product/{id}", 1))
+//	                .andExpect(status().isOk());
+//	    }
+//	
+//	
+//	
+	
+	
+	
+	
 	@Test
 	@DisplayName("GET /getAllImage")
-	void testProductPutVersionMismatch() throws Exception {
+	void testGetAllImage() throws Exception {
 
 		// Setup mocked service
 		ArrayList<Image> mockImage = new ArrayList<Image>();
 		mockImage.add(new Image(1, "mockPath", "Normal", 1));
-		mockImage.add(new Image(2, "mockPath", "Normal", 1));
-		mockImage.add(new Image(3, "mockPath", "Normal", 1));
 
 		doReturn(mockImage).when(service).getAllImages();
 		mockMvc.perform(get("/bachelor/image/getAllImage"))
 				.andExpect(status().isFound());
 
 	}
-
+	
+	
 	static String asJsonString(final Object obj) {
 		try {
 			return new ObjectMapper().writeValueAsString(obj);
