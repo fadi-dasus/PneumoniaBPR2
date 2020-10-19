@@ -24,24 +24,19 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/bachelor/image")
 public class ImageController {
-	final String getImageSummary = "Get image by its Id from the database";
-	final String updateStatusSummary = "Update an image and move it from the temporary directory to its final destination based on its predicted status ";
-	final String saubmitImageSummary = "Insert a new image, it accepts image directory,and the  preliminary diagnosis";
-	final String loadDbSummary = "Insert all images from a specific directory into the database in one go, Note: images with unknown status must be submitted individually";
-	final String deleteSummary = "REMOVE ALL  DATA FROM THE DATABASE";
 	@Autowired
 	ImgService imageService;
 	@Autowired
 	ImageControllerUtil imgUtil;
 
-	@Operation(summary = getImageSummary)
+	@Operation(summary = CONSTANTS.getImageSummary)
 	@GetMapping("/getImage/{id}")
 	public ResponseEntity<?> getImageById(@PathVariable Integer id) {
 		Optional<Image> img = imageService.getImageById(id);
 		return imgUtil.getImageByIdResponseBuilder(img);
 	}
 
-	@Operation(summary = saubmitImageSummary)
+	@Operation(summary = CONSTANTS.saubmitImageSummary)
 	@PostMapping("/saubmitImage")
 	public ResponseEntity<?> saubmitImage(@RequestBody Image image) {
 		Image img = imageService.saubmitImage(image);
@@ -55,7 +50,7 @@ public class ImageController {
 		return new ResponseEntity<Iterable<Image>>(img, HttpStatus.FOUND);
 	}
 
-	@Operation(summary = loadDbSummary)
+	@Operation(summary = CONSTANTS.loadDbSummary)
 	@PostMapping("/loadPicturesIntoDB")
 	public ResponseEntity<String> loadDB(@RequestBody ImageDirectory path) {
 		imageService.loadDB(path);
@@ -64,7 +59,7 @@ public class ImageController {
 	}
 
 	@PutMapping("/updateStatus")
-	@Operation(summary = updateStatusSummary)
+	@Operation(summary = CONSTANTS.updateStatusSummary)
 
 	public ResponseEntity<?> updateImageStatus(@RequestBody Image image, @RequestHeader("If-Match") Integer ifMatch) {
 		Optional<Image> existingImage = imageService.getImageById(image.getId());
@@ -73,7 +68,7 @@ public class ImageController {
 	}
 
 	@DeleteMapping("/cleardb")
-	@Operation(summary = deleteSummary)
+	@Operation(summary = CONSTANTS.deleteSummary)
 	public ResponseEntity<String> cleanDatabaseTotally() {
 		imageService.removeAllImagesFromTheTable();
 		return new ResponseEntity<String>("Done", HttpStatus.OK);
