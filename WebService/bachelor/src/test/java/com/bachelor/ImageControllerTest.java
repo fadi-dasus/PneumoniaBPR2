@@ -127,6 +127,29 @@ public class ImageControllerTest {
 
     }
 	
+	   @Test
+	    @DisplayName("PUT /image/1 - Version Mismatch")
+	    void testImagePutVersionMismatch() throws Exception {
+	        // Setup mocked service
+			Image puttImage = new Image(1,"mockPath", "Normal");
+			Image mockImage = new Image(1, "mockPath", "Normal", 2);
+			doReturn(Optional.of(mockImage)).when(service).getImageById(1);
+	        doReturn(true).when(service).update(any());
+
+	        mockMvc.perform(put("/bachelor/image/updateStatus")
+	                .contentType(MediaType.APPLICATION_JSON)
+	                .header(HttpHeaders.IF_MATCH, 1)
+	                .content(asJsonString(puttImage)))
+
+	                // Validate the response code and content type
+	                .andExpect(status().isConflict());
+	    }
+	
+	
+	
+	
+	
+	
 	
 	@Test
 	@DisplayName("GET /getAllImage")
