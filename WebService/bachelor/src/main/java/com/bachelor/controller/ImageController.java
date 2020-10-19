@@ -56,13 +56,11 @@ public class ImageController {
 		return imgUtil.submitImageResponseBuilder(img);
 	}
 
-	// TODO Write a Test
-
 	@Operation(summary = "Get all images from the database")
 	@GetMapping("/getAllImage")
 	public ResponseEntity<Iterable<Image>> getAllImages() {
 		Iterable<Image> img = imageService.getAllImages();
-		return new ResponseEntity<Iterable<Image>>(img, HttpStatus.OK);
+		return new ResponseEntity<Iterable<Image>>(img, HttpStatus.FOUND);
 	}
 
 	// TODO Write a Test
