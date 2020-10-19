@@ -1,7 +1,5 @@
 package com.bachelor.controller;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bachelor.model.Image;
@@ -33,23 +30,25 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RestController
 @RequestMapping("/bachelor/image")
 public class ImageController {
+	final String getImageSummary = "Get image by its Id from the database";
+	final String updateStatusSummary = "Update an image and move it from the temporary directory to its final destination based on its predicted status ";
+	final String saubmitImageSummary = "Insert a new image, it accepts image directory,and the  preliminary diagnosis";
+	final String loadDbSummary = "Insert all images from a specific directory into the database in one go, Note: images with unknown status must be submitted individually";
 
 	@Autowired
 	ImgService imageService;
-
 	@Autowired
 	ImageControllerUtil imgUtil;
-	private static final Logger logger = LogManager.getLogger(ImageController.class);
 
-	// TODO Write a Test
-	@Operation(summary = "Get image by its Id from the database")
+	
+	@Operation(summary = getImageSummary)
 	@GetMapping("/getImage/{id}")
 	public ResponseEntity<?> getImageById(@PathVariable Integer id) {
 		Optional<Image> img = imageService.getImageById(id);
 		return imgUtil.getImageByIdResponseBuilder(img);
 	}
 
-	@Operation(summary = "Insert a new image, it accepts image directory,and the  preliminary diagnosis")
+	@Operation(summary = saubmitImageSummary)
 	@PostMapping("/saubmitImage")
 	public ResponseEntity<?> saubmitImage(@RequestBody Image image) {
 
@@ -66,7 +65,7 @@ public class ImageController {
 
 	// TODO Write a Test
 
-	@Operation(summary = "Insert all images from a specific directory into the database in one go, Note: images with unknown status must be submitted individually")
+	@Operation(summary = loadDbSummary)
 	@PostMapping("/loadPicturesIntoDB")
 	public ResponseEntity<String> loadDB(@RequestBody ImageDirectory path) {
 		imageService.loadDB(path);
@@ -81,7 +80,7 @@ public class ImageController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = Image.class)) }),
 			@ApiResponse(responseCode = "404", description = "did not find an image with this Id", content = @Content), })
 	@PutMapping("/updateStatus")
-	@Operation(summary = "Update an image and move it from the temporary directory to its final destination based on its predicted status ")
+	@Operation(summary = updateStatusSummary)
 	public ResponseEntity<Image> updateImageStatus(
 			@Parameter(description = "Provide the image after the prediction process") @RequestBody Image img)
 			throws Exception {

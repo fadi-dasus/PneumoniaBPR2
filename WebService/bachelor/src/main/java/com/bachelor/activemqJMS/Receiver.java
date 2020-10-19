@@ -14,9 +14,7 @@ public class Receiver {
 	@JmsListener(destination = "img")
 	public void receiveMessage(Image img) {
 		System.out.println("###################################################################################");
-
 		LOGGER.info("Image Recieved: " + img);
-
 		System.out.println("############################################################################");
 //		throw new RuntimeException();
 	}

@@ -4,6 +4,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,10 @@ public class ImageControllerUtil {
 	@Autowired
 	ImgService imageService;
 
+	
+	private static final Logger logger = LogManager.getLogger(ImageController.class);
+
+	
 	ResponseEntity<?> getImageByIdResponseBuilder(Optional<Image> optiona) {
 		return optiona.map(image -> {
 			try {
@@ -31,11 +37,18 @@ public class ImageControllerUtil {
 	}
 	ResponseEntity<?> submitImageResponseBuilder(Image img){
 		//TODO CHECK IF THE IMAGE IN JSON IS THE SAME AS THE IMAGE WE ARE EXPECTING
-//		if (!(img instanceof Image)) {
-//			return new ResponseEntity<String>("Could not insert the image to the database please check the payload:" ,HttpStatus.NOT_ACCEPTABLE);
-//		}
-		return new ResponseEntity<String>("The image has been submitted successfully: " + img.getId().toString(),HttpStatus.CREATED);
-		
+		//TODO ADD eTag
+
+		  logger.info("Creating new product with id: {}, path: {}", img.getId(), img.getPhysicalPath());
+	        try {
+	            // Build a created response
+	            return ResponseEntity
+	                    .created(new URI("/image/" + img.getId()))
+	                    //.eTag(Integer.toString(img.getVersion()))
+	                    .body(img);
+	        } catch (URISyntaxException e) {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	        }
 	}
 
 }
