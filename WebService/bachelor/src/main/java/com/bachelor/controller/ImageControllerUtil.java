@@ -37,13 +37,11 @@ public class ImageControllerUtil {
 	}
 
 	ResponseEntity<?> submitImageResponseBuilder(Image img) {
-		// TODO CHECK IF THE IMAGE IN JSON IS THE SAME AS THE IMAGE WE ARE EXPECTING
-		// TODO ADD eTag
 
 		logger.info("Creating new image with id: {}, path: {}", img.getId(), img.getPhysicalPath());
 		try {
 			// Build a created response
-			return ResponseEntity.created(new URI("/image/" + img.getId()))
+			return ResponseEntity.created(new URI("/getImage/" + img.getId()))
 					.eTag(Integer.toString(img.getVersion()))
 					.body(img);
 		} catch (URISyntaxException e) {

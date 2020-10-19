@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bachelor.model.Image;
@@ -50,9 +51,9 @@ public class ImageController {
 
 	@Operation(summary = saubmitImageSummary)
 	@PostMapping("/saubmitImage")
-	public ResponseEntity<?> saubmitImage(@RequestBody Image image) {
-	
 
+	public ResponseEntity<?> saubmitImage(@RequestBody Image image) {
+		
 		Image img = imageService.saubmitImage(image);
 		return imgUtil.submitImageResponseBuilder(img);
 	}

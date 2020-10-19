@@ -33,17 +33,12 @@ public class Image {
 
 	}
 
-	@JsonCreator
-	public Image(@JsonProperty("Id") Integer Id, @JsonProperty("physicalPath") String physicalPath,
-			@JsonProperty("status") String status) {
-		this.Id = Id;
-		this.status = status;
-		this.physicalPath = physicalPath;
-	}
-
-	public Image(String physicalPath, String status) {
+	
+	public Image(Integer id, String physicalPath, String status, Integer version) {
+		Id = id;
 		this.physicalPath = physicalPath;
 		this.status = status;
+		this.version = version;
 	}
 
 	public Image(String physicalPath, String status, Integer version) {
@@ -51,6 +46,13 @@ public class Image {
 		this.status = status;
 		this.version = version;
 	}
+
+	public Image( String physicalPath,String status) {
+		this.status = status;
+		this.physicalPath = physicalPath;
+
+	}
+
 
 	public Integer getId() {
 		return Id;

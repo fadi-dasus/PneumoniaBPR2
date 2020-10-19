@@ -21,7 +21,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
 import com.bachelor.model.Image;
 import com.bachelor.service.ImgService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,12 +34,11 @@ public class ImageControllerTest {
 	private MockMvc mockMvc;
 
 
-
 	@Test
 	@DisplayName("GET /Image/1 - Found")
 	void testGetImageIdFound() throws Exception {
 		// Setup our mocked service
-		Image mockImage = new Image(1, "mockPath", "Normal");
+		Image mockImage = new Image(1, "mockPath", "Normal",1);
 		doReturn(Optional.of(mockImage)).when(service).getImageById(1);
 
 		// Execute the GET request
@@ -48,6 +46,9 @@ public class ImageControllerTest {
 
 				// validate response code
 				.andExpect(status().isOk())
+                .andExpect(header().string(HttpHeaders.ETAG, "\"1\""))
+                .andExpect(header().string(HttpHeaders.LOCATION, "/getImage/1"))
+
 				// Validate the response code and content type
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(header().string(HttpHeaders.LOCATION, "/getImage/1"))
@@ -77,10 +78,7 @@ public class ImageControllerTest {
 
 		 // Setup mocked service
 			Image postImage = new Image( "mockPath", "Normal");
-
-			Image mockImage = new Image(1, "mockPath", "Normal");
-			
-
+			Image mockImage = new Image(1, "mockPath", "Normal",1);
 	        doReturn(mockImage).when(service).saubmitImage(any());
 	        
 	        mockMvc.perform(post("/bachelor/image/saubmitImage")
@@ -92,14 +90,14 @@ public class ImageControllerTest {
 	                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 
 	                // Validate the headers
-//	                .andExpect(header().string(HttpHeaders.ETAG, "\"1\""))
-	                .andExpect(header().string(HttpHeaders.LOCATION, "/image/1"))
+	                .andExpect(header().string(HttpHeaders.ETAG, "\"1\""))
+	                .andExpect(header().string(HttpHeaders.LOCATION, "/getImage/1"))
 
 	                // Validate the returned fields
 	                .andExpect(jsonPath("$.id", is(1)))
 	                .andExpect(jsonPath("$.physicalPath", is("mockPath")))
-	                .andExpect(jsonPath("$.status", is("Normal")));
-//	                .andExpect(jsonPath("$.version", is(1)));
+	                .andExpect(jsonPath("$.status", is("Normal")))
+	                .andExpect(jsonPath("$.version", is(1)));
 	    }
 
 

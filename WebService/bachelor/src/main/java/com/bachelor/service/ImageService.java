@@ -60,7 +60,7 @@ public class ImageService implements ImgService {
 
 		Image image = dao
 				.saveAndFlush(new Image(FoldersPathtUtil.temporaryFolderDestination.concat(img.getPhysicalPath()),
-						img.getStatus(),img.getVersion()));
+						img.getStatus(), img.getVersion()));
 		jms.send(image);
 		return image;
 	}
