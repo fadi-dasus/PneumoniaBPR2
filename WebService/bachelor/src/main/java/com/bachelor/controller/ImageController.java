@@ -51,10 +51,12 @@ public class ImageController {
 	@Operation(summary = saubmitImageSummary)
 	@PostMapping("/saubmitImage")
 	public ResponseEntity<?> saubmitImage(@RequestBody Image image) {
+	
 
 		Image img = imageService.saubmitImage(image);
 		return imgUtil.submitImageResponseBuilder(img);
 	}
+	
 
 	@Operation(summary = "Get all images from the database")
 	@GetMapping("/getAllImage")
@@ -90,7 +92,6 @@ public class ImageController {
 	}
 
 	// TODO Write a Test
-
 	@ApiResponse(responseCode = "200", description = "Database has no records", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = Image.class)) })
 	@DeleteMapping("/cleardb")

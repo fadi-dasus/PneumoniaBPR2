@@ -14,9 +14,4 @@ public interface ImageRepository extends JpaRepository<Image, Integer> {
 	@Query(value = "UPDATE image SET physical_path =?, status = ? WHERE Id =?", nativeQuery = true)
 	void update(String physical_path, String status, int Id);
 	
-	
-	    public Image findByPhysicalPath(String PhysicalPath);
-	 
-	
-
 }

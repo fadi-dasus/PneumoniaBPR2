@@ -36,7 +36,6 @@ public class ImageControllerTest {
 
 
 
-	@SuppressWarnings("deprecation")
 	@Test
 	@DisplayName("GET /Image/1 - Found")
 	void testGetImageIdFound() throws Exception {
@@ -59,7 +58,6 @@ public class ImageControllerTest {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
 	@DisplayName("GET /Image/1 - NOT Found")
 	void testGetImageIdNotFound() throws Exception {
@@ -73,7 +71,6 @@ public class ImageControllerTest {
 	}
 	
 	
-	 @SuppressWarnings("deprecation")
 	@Test
 	    @DisplayName("POST /Image - Success")
 	    void testSubmitImage() throws Exception {
@@ -84,8 +81,6 @@ public class ImageControllerTest {
 			Image mockImage = new Image(1, "mockPath", "Normal");
 			
 
-//	        Product postProduct = new Product("Product Name", 10);
-//	        Product mockProduct = new Product(1, "Product Name", 10, 1);
 	        doReturn(mockImage).when(service).saubmitImage(any());
 	        
 	        mockMvc.perform(post("/bachelor/image/saubmitImage")

@@ -57,11 +57,12 @@ public class ImageService implements ImgService {
 	}
 
 	public Image saubmitImage(Image img) {
-		jms.send(new Image(1, "E:\\7 semester\\BP\\dataset", "Normal"));
-		logger.info("we will notify the ML with the path in here");
-	
-		return dao.save(new Image(FoldersPathtUtil.temporaryFolderDestination.concat(img.getPhysicalPath()),
-				img.getStatus()));
+
+		Image image = dao
+				.saveAndFlush(new Image(FoldersPathtUtil.temporaryFolderDestination.concat(img.getPhysicalPath()),
+						img.getStatus(),img.getVersion()));
+		jms.send(image);
+		return image;
 	}
 
 }
