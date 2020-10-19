@@ -50,11 +50,9 @@ public class ImageControllerUtil {
 	}
 	
 	
-	
 	 ResponseEntity<?> updateImageHelper(Image image, Integer ifMatch, Optional<Image> existingImage) {
 		return existingImage.map(p -> {
 	            // Compare the etags
-	    	  System.out.println(p.getVersion().equals(ifMatch));
 	            if (!p.getVersion().equals(ifMatch)) {
 	                return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	            }

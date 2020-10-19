@@ -9,7 +9,7 @@ import com.bachelor.model.Image;
 
 @Service
 
-public class ImageJMSService {
+public class ImageJMSService implements IJMSService {
 private static final String IMAGE_QUEUE = "img";
 
 @Autowired

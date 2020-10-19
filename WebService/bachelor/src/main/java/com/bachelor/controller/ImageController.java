@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
+import com.bachelor.service.IJMSService;
 import com.bachelor.service.ImgService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,6 +27,8 @@ import io.swagger.v3.oas.annotations.Operation;
 public class ImageController {
 	@Autowired
 	ImgService imageService;
+	@Autowired
+	IJMSService jmsService;
 	@Autowired
 	ImageControllerUtil imgUtil;
 
@@ -40,6 +43,7 @@ public class ImageController {
 	@PostMapping("/saubmitImage")
 	public ResponseEntity<?> saubmitImage(@RequestBody Image image) {
 		Image img = imageService.saubmitImage(image);
+		jmsService.send(img);
 		return imgUtil.submitImageResponseBuilder(img);
 	}
 

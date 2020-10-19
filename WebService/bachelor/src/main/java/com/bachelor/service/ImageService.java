@@ -23,8 +23,6 @@ public class ImageService implements ImgService {
 	ImageRepository dao;
 	@Autowired
 	IFileManipulation fileManipulater;
-	@Autowired
-	ImageJMSService jms;
 
 	public Optional<Image> getImageById(int id) {
 		return dao.findById(id);
@@ -43,7 +41,7 @@ public class ImageService implements ImgService {
 			flag = true;
 
 		} catch (Exception e) {
-			flag =false;
+			flag = false;
 			System.out.println(e);
 		}
 		return flag;
@@ -65,11 +63,10 @@ public class ImageService implements ImgService {
 	}
 
 	public Image saubmitImage(Image img) {
-
+		img.setVersion(0);
 		Image image = dao
 				.saveAndFlush(new Image(FoldersPathtUtil.temporaryFolderDestination.concat(img.getPhysicalPath()),
 						img.getStatus(), img.getVersion()));
-		jms.send(image);
 		return image;
 	}
 
