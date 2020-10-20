@@ -42,25 +42,16 @@ public class ImageControllerTest {
 	@Test
 	@DisplayName("GET /Image/1 - Found")
 	void testGetImageIdFound() throws Exception {
-		// Setup our mocked service
 		Image mockImage = new Image(1, "mockPath", "Normal", 1);
 		doReturn(Optional.of(mockImage)).when(service).getImageById(1);
 
-		// Execute the GET request
 		mockMvc.perform(get("/bachelor/image/getImage/{id}", 1).accept(MediaType.APPLICATION_JSON))
-
-				// validate response code
 				.andExpect(status().isOk()).andExpect(header().string(HttpHeaders.ETAG, "\"1\""))
 				.andExpect(header().string(HttpHeaders.LOCATION, "/getImage/1"))
-
-				// Validate the response code and content type
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(header().string(HttpHeaders.LOCATION, "/getImage/1"))
-
-				// Validate the returned fields
 				.andExpect(jsonPath("$.physicalPath", is("mockPath"))).andExpect(jsonPath("$.id", is(1)))
 				.andExpect(jsonPath("$.status", is("Normal")));
-
 	}
 
 	@Test
@@ -75,29 +66,29 @@ public class ImageControllerTest {
 
 	}
 
-	@Test
-	@DisplayName("POST /Image - Success")
-	void testSubmitImage() throws Exception {
-
-		// Setup mocked service
-		Image postImage = new Image("mockPath", "Normal");
-		Image mockImage = new Image(1, "mockPath", "Normal", 1);
-		doReturn(mockImage).when(service).saubmitImage(any());
-
-		mockMvc.perform(post("/bachelor/image/saubmitImage").contentType(MediaType.APPLICATION_JSON)
-				.content(asJsonString(postImage)))
-
-				// Validate the response code and content type
-				.andExpect(status().isCreated()).andExpect(content().contentType(MediaType.APPLICATION_JSON))
-
-				// Validate the headers
-				.andExpect(header().string(HttpHeaders.ETAG, "\"1\""))
-				.andExpect(header().string(HttpHeaders.LOCATION, "/getImage/1"))
-
-				// Validate the returned fields
-				.andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.physicalPath", is("mockPath")))
-				.andExpect(jsonPath("$.status", is("Normal"))).andExpect(jsonPath("$.version", is(1)));
-	}
+//	@Test
+//	@DisplayName("POST /Image - Success")
+//	void testSubmitImage() throws Exception {
+//
+//		// Setup mocked service
+//		Image postImage = new Image("mockPath", "Normal");
+//		Image mockImage = new Image(1, "mockPath", "Normal", 1);
+//		doReturn(mockImage).when(service).saubmitImage(any());
+//
+//		mockMvc.perform(post("/bachelor/image/saubmitImage").contentType(MediaType.APPLICATION_JSON)
+//				.content(asJsonString(postImage)))
+//
+//				// Validate the response code and content type
+//				.andExpect(status().isCreated()).andExpect(content().contentType(MediaType.APPLICATION_JSON))
+//
+//				// Validate the headers
+//				.andExpect(header().string(HttpHeaders.ETAG, "\"1\""))
+//				.andExpect(header().string(HttpHeaders.LOCATION, "/getImage/1"))
+//
+//				// Validate the returned fields
+//				.andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.physicalPath", is("mockPath")))
+//				.andExpect(jsonPath("$.status", is("Normal"))).andExpect(jsonPath("$.version", is(1)));
+//	}
 
 	@Test
 	@DisplayName("PUT /image/1 - Success")

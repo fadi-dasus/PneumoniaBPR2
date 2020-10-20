@@ -7,5 +7,6 @@ public class CONSTANTS {
 	protected static final String saubmitImageSummary = "Insert a new image, it accepts image directory,and the  preliminary diagnosis";
 	protected static final String loadDbSummary = "Insert all images from a specific directory into the database in one go, Note: images with unknown status must be submitted individually";
 	protected static final String deleteSummary = "REMOVE ALL  DATA FROM THE DATABASE";
+	public static final String getAllImages = "Get all images from the database";
 
 }

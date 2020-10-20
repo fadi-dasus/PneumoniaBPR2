@@ -22,6 +22,8 @@ import com.bachelor.service.ImgService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
+//import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/bachelor/image")
 public class ImageController {
@@ -47,8 +49,8 @@ public class ImageController {
 		return imgUtil.submitImageResponseBuilder(img);
 	}
 
-	@Operation(summary = "Get all images from the database")
-	@GetMapping("/getAllImage")
+	@Operation(summary =CONSTANTS.getAllImages )
+	@GetMapping("/getAllImages")
 	public ResponseEntity<Iterable<Image>> getAllImages() {
 		Iterable<Image> img = imageService.getAllImages();
 		return new ResponseEntity<Iterable<Image>>(img, HttpStatus.FOUND);
