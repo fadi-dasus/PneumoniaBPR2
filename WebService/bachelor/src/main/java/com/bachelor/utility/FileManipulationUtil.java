@@ -7,13 +7,17 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.bachelor.controller.ImageController;
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
 
 @Component
 public class FileManipulationUtil implements IFileManipulation {
+	private static final Logger logger = LogManager.getLogger(ImageController.class);
 
 	@Override
 	public List<Image> getAllImagesInThePath(ImageDirectory dir) {
@@ -22,6 +26,7 @@ public class FileManipulationUtil implements IFileManipulation {
 			images = Files.walk(Paths.get(dir.getSourceImagePath())).filter(Files::isRegularFile)
 					.map(p -> new Image(p.toString(), dir.getStatus())).collect(Collectors.toList());
 		} catch (IOException e) {
+			logger.info("No files in the directory");
 			e.printStackTrace();
 		}
 		return images;
@@ -39,17 +44,17 @@ public class FileManipulationUtil implements IFileManipulation {
 		try {
 			Files.move(Paths.get(oldPath), Paths.get(newPath));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
 	private String concatinateString(Image img) {
-		if (img.getStatus().equalsIgnoreCase("Normal"))
-			return concatNormal(img.getPhysicalPath());
-		else
-			return concatPneumonia(img.getPhysicalPath());
+		return img.getStatus().equalsIgnoreCase("Normal") ? concatNormal(img.getPhysicalPath()) : concatPneumonia(img.getPhysicalPath());
+//		if (img.getStatus().equalsIgnoreCase("Normal"))
+//			return concatNormal(img.getPhysicalPath());
+//		else
+//			return concatPneumonia(img.getPhysicalPath());
 
 	}
 

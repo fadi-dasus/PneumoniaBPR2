@@ -15,7 +15,7 @@ import com.bachelor.model.Image;
 import com.bachelor.service.ImgService;
 
 @Component
-public class ImageControllerUtil {
+public class ResponseBuilderUtil {
 	@Autowired
 	ImgService imageService;
 

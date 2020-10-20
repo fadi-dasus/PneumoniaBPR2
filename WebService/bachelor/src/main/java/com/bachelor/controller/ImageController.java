@@ -17,12 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
-import com.bachelor.service.IJMSService;
 import com.bachelor.service.ImgService;
+import com.bachelor.utility.CONSTANTS;
 
 import io.swagger.v3.oas.annotations.Operation;
-
-//import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/bachelor/image")
@@ -30,9 +28,7 @@ public class ImageController {
 	@Autowired
 	ImgService imageService;
 	@Autowired
-	IJMSService jmsService;
-	@Autowired
-	ImageControllerUtil imgUtil;
+	ResponseBuilderUtil imgUtil;
 
 	@Operation(summary = CONSTANTS.getImageSummary)
 	@GetMapping("/getImage/{id}")
@@ -45,11 +41,11 @@ public class ImageController {
 	@PostMapping("/saubmitImage")
 	public ResponseEntity<?> saubmitImage(@RequestBody Image image) {
 		Image img = imageService.saubmitImage(image);
-		jmsService.send(img);
+//		jmsService.send(img);
 		return imgUtil.submitImageResponseBuilder(img);
 	}
 
-	@Operation(summary =CONSTANTS.getAllImages )
+	@Operation(summary = CONSTANTS.getAllImagesSummary)
 	@GetMapping("/getAllImages")
 	public ResponseEntity<Iterable<Image>> getAllImages() {
 		Iterable<Image> img = imageService.getAllImages();
@@ -60,8 +56,7 @@ public class ImageController {
 	@PostMapping("/loadPicturesIntoDB")
 	public ResponseEntity<String> loadDB(@RequestBody ImageDirectory path) {
 		imageService.loadDB(path);
-		return new ResponseEntity<String>("the database has been loaded with all the files from the provided path ",
-				HttpStatus.OK);
+		return new ResponseEntity<String>(CONSTANTS.loadDbSummary, HttpStatus.OK);
 	}
 
 	@PutMapping("/updateStatus")

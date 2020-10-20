@@ -27,6 +27,7 @@ public class ImageService implements ImgService {
 
 	public Optional<Image> getImageById(int id) {
 		return dao.findById(id);
+		
 	}
 
 	public Iterable<Image> getAllImages() {

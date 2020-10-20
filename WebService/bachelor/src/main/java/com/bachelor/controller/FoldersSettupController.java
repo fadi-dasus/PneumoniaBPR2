@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bachelor.utility.FoldersPathtUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
+import com.bachelor.utility.CONSTANTS;
 
 @RestController
 @RequestMapping("/bachelor/folderPath")
@@ -18,7 +19,7 @@ public class FoldersSettupController {
 	@Autowired
 	FoldersPathtUtil foldersPathtUtil;
 
-	@Operation(summary = "Get all the directories used for saving images")
+	@Operation(summary = CONSTANTS.folderSummary)
 	@GetMapping("/getFoldersPath")
 	public ResponseEntity<String> insertNewImage() {
 

@@ -46,19 +46,19 @@ public class ImageIntegrationTest {
 		assertEquals(HttpStatus.NOT_FOUND.value(), statusCode);
 	}
 	
-//	@Test
-//	public void testSubmitImage() throws Exception{
-//		Image image = new Image("test Path","test Status");
-//		ResponseEntity<Image> responseEntity = restTemplate.postForEntity(URL+ "/saubmitImage",image, Image.class);
-//		int statusCode = responseEntity.getStatusCodeValue();
-//		Image resultImage = responseEntity.getBody();
-//		assertNotNull(resultImage);
-//		System.out.println(resultImage.getPhysicalPath());
-//		assertEquals(FoldersPathtUtil.temporaryFolderDestination.concat(image.getPhysicalPath()), resultImage.getPhysicalPath());
-//		assertEquals(0, resultImage.getVersion());
-//		assertEquals(HttpStatus.CREATED.value(), statusCode);
-//		repo.deleteById(resultImage.getId());
-//	}	
+	@Test
+	public void testSubmitImage() throws Exception{
+		Image image = new Image("test Path","test Status");
+		ResponseEntity<Image> responseEntity = restTemplate.postForEntity(URL+ "/saubmitImage",image, Image.class);
+		int statusCode = responseEntity.getStatusCodeValue();
+		Image resultImage = responseEntity.getBody();
+		assertNotNull(resultImage);
+		System.out.println(resultImage.getPhysicalPath());
+		assertEquals(FoldersPathtUtil.temporaryFolderDestination.concat(image.getPhysicalPath()), resultImage.getPhysicalPath());
+		assertEquals(0, resultImage.getVersion());
+		assertEquals(HttpStatus.CREATED.value(), statusCode);
+		repo.deleteById(resultImage.getId());
+	}	
 
 	
 }
