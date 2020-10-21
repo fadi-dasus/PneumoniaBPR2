@@ -1,7 +1,7 @@
 package com.bachelor.service;
 
+import java.util.List;
 import java.util.Optional;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import com.bachelor.utility.FoldersPathtUtil;
 import com.bachelor.utility.IFileManipulation;
 
 @Service
+@Transactional(isolation = Isolation.READ_COMMITTED)
 public class ImageService implements ImgService {
 	private static final Logger logger = LogManager.getLogger(ImageController.class);
 
@@ -27,39 +28,36 @@ public class ImageService implements ImgService {
 
 	public Optional<Image> getImageById(int id) {
 		return dao.findById(id);
-		
+
 	}
 
 	public Iterable<Image> getAllImages() {
 		return dao.findAll();
 	}
-	
-//	@Transactional(isolation=Isolation.READ_COMMITTED)
+
 	public Image update(Image img) {
-//		boolean flag = false;
-		Image updatedImage=null;
+		Image updatedImage = null;
 		try {
-		 updatedImage = fileManipulater.moveImageToItsAppropriateDirectory(img);
-		 updatedImage.setVersion(updatedImage.getVersion()+1);
+			updatedImage = fileManipulater.moveImageToItsAppropriateDirectory(img);
+			updatedImage.setVersion(updatedImage.getVersion() + 1);
 			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(), updatedImage.getVersion(),
 					updatedImage.getId());
-//			flag = true;
 
 		} catch (Exception e) {
-//			flag = false;
-			System.out.println(e);
+			logger.error(e.getMessage());
 		}
 		return updatedImage;
 
 	}
 
-	@Transactional
-	public void loadDB(ImageDirectory dir) {
-		if (fileManipulater.getAllImagesInThePath(dir) != null) {
-			dao.saveAll(fileManipulater.getAllImagesInThePath(dir));
+	public List<Image> loadDB(ImageDirectory dir) {
+		List<Image> addedList = null;
+		List<Image> list = fileManipulater.getAllImagesInThePath(dir);
+		if (list != null) {
+			addedList = dao.saveAll(list);
 		} else
-			logger.info("check file distination");
-
+			logger.info("No images in the distination");
+		return addedList;
 	}
 
 	public void removeAllImagesFromTheTable() {

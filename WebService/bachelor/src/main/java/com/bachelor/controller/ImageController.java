@@ -1,5 +1,6 @@
 package com.bachelor.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -59,16 +60,18 @@ public class ImageController {
 
 	@Operation(summary = CONSTANTS.loadDbSummary)
 	@PostMapping("/loadPicturesIntoDB")
-	public ResponseEntity<String> loadDB(@RequestBody ImageDirectory path) {
-		imageService.loadDB(path);
-		return new ResponseEntity<String>(CONSTANTS.loadDbSummary, HttpStatus.OK);
+	public ResponseEntity<?> loadDB(@RequestBody ImageDirectory path) {
+		List<Image> list = imageService.loadDB(path);
+		if (list.size() == 0) {
+			new ResponseEntity<String>(" No files found", HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<String>(list.size() + CONSTANTS.loadDB, HttpStatus.OK);
 	}
 
 	@PutMapping("/updateStatus")
 	@Operation(summary = CONSTANTS.updateStatusSummary)
 	public ResponseEntity<?> updateImageStatus(@RequestBody Image image, @RequestHeader("If-Match") Integer ifMatch) {
-		return imgUtil.updateImageHelper(image,ifMatch);
-		
+		return imgUtil.updateImageHelper(image, ifMatch);
 
 	}
 

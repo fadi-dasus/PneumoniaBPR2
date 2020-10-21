@@ -1,5 +1,6 @@
 package com.bachelor.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.bachelor.model.Image;
@@ -11,7 +12,7 @@ public interface ImgService {
 
 	Iterable<Image> getAllImages();
 
-	void loadDB(ImageDirectory path);
+	List<Image> loadDB(ImageDirectory path);
 
 	Image update(Image img);
 

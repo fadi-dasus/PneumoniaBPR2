@@ -121,11 +121,8 @@ public class ImageControllerTest {
 
 		doReturn(Optional.of(mockgetImage)).when(service).getImageById(1);
 		
-
 		mockMvc.perform(put("/bachelor/image/updateStatus").contentType(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.IF_MATCH, 1).content(asJsonString(puttImage)))
-
-				// Validate the response code and content type
 				.andExpect(status().isConflict());
 	}
 
@@ -147,7 +144,6 @@ public class ImageControllerTest {
 	@DisplayName("GET /getAllImages")
 	void testGetAllImage() throws Exception {
 
-		// Setup mocked service
 		ArrayList<Image> mockImage = new ArrayList<Image>();
 		mockImage.add(new Image(1, "mockPath", "Normal", 1));
 

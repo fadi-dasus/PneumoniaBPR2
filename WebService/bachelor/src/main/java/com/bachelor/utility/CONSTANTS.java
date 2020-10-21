@@ -9,7 +9,7 @@ public class CONSTANTS {
 	public static final String deleteSummary = "REMOVE ALL  DATA FROM THE DATABASE";
 	public static final String getAllImagesSummary = "Get all images from the database";
 	public static final String folderSummary = "Get all the directories used for saving images";
-	public static final String loadDBSummary = "the database has been loaded with all the files from the provided path ";
+	public static final String loadDB = " images have been loaded with all the files from the provided path ";
 	
 
 

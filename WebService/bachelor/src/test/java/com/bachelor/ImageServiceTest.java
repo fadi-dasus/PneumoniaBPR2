@@ -1,7 +1,11 @@
 package com.bachelor;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 
+import java.nio.file.NoSuchFileException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +22,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.bachelor.dao.ImageRepository;
 import com.bachelor.model.Image;
+import com.bachelor.model.ImageDirectory;
 import com.bachelor.service.ImgService;
+import com.bachelor.utility.IFileManipulation;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -29,6 +35,9 @@ public class ImageServiceTest {
 
 	@MockBean
 	private ImageRepository repository;
+
+	@MockBean
+	private IFileManipulation fileManipulater;
 
 	Image mockImage = new Image(1, "mockPath", "Normal", 1);
 
@@ -64,12 +73,54 @@ public class ImageServiceTest {
 	@Test
 	@DisplayName("Test save image")
 	void testSave() {
-		Image mockImage = new Image(1, "mockPath", "Normal");
+		Image mockImage = new Image(1, "mockPath", "Normal", 1);
 		doReturn(mockImage).when(repository).saveAndFlush(any());
 
 		Image returnedImage = service.saubmitImage(mockImage);
 		Assertions.assertNotNull(returnedImage, "The saved image should not be null");
 		Assertions.assertEquals(0, returnedImage.getVersion().intValue(), "The version for a new product should be 0");
 	}
+
+	@Test
+	@DisplayName("Test update image success")
+	void testUpdateSuccess() throws NoSuchFileException {
+		Image mockImage = new Image(1, "mockPath", "Normal", 0);
+		Image updatedImage = new Image(1, "new edited mockPath", "Normal", 0);
+		doReturn(updatedImage).when(fileManipulater).moveImageToItsAppropriateDirectory(any());
+		Image returnedImage = service.update(mockImage);
+
+		Assertions.assertNotNull(returnedImage, "The updated image should not be null");
+		Assertions.assertEquals(1, returnedImage.getVersion().intValue(),
+				"The version for the updated image should be 1");
+	}
+
+	@Test
+	@DisplayName("Test update image throws exception")
+	void testUpdate() throws NoSuchFileException {
+		Image mockImage = new Image(1, "mockPath", "Normal", 0);
+		doThrow(NoSuchFileException.class).when(fileManipulater).moveImageToItsAppropriateDirectory(any());
+		Image returnedImage = service.update(mockImage);
+		Assertions.assertNull(returnedImage, "we should not update if there an exception occurs ");
+	}
+
+	@Test
+	@DisplayName("Test insert images to the database Success")
+	void testLoadDBSuccess() throws NoSuchFileException {
+		List<Image> mockList = new ArrayList<>();
+		Image mockImage1 = new Image(1, "mockPath", "Normal", 0);
+		Image mockImage2 = new Image(2, "mockPath", "Normal", 0);
+		mockList.add(mockImage1);
+		mockList.add(mockImage2);
+
+		doReturn(mockList).when(fileManipulater).getAllImagesInThePath(any());
+		doReturn(mockList).when(repository).saveAll(mockList);
+
+		List<Image> loadedList = service.loadDB(new ImageDirectory("path", "Normal"));
+		Assertions.assertNotNull(loadedList);
+		Assertions.assertEquals(2, loadedList.size());
+
+	}
+
+//	
 
 }
