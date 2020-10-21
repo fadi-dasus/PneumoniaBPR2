@@ -1,4 +1,4 @@
-package com.bachelor.utility;
+package com.bachelor.utility.files;
 
 import java.io.IOException;
 import java.nio.file.Files;

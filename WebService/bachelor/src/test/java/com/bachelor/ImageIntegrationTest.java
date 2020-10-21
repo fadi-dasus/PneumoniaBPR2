@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.bachelor.dao.ImageRepository;
 import com.bachelor.model.Image;
-import com.bachelor.utility.FoldersPathtUtil;
+import com.bachelor.utility.files.FoldersPathtUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -39,7 +39,7 @@ public class ImageIntegrationTest {
 	}
 	@Test
 	public void testGetImageNotFound () throws Exception{
-		ResponseEntity<Image> responseEntity = restTemplate.getForEntity(URL+ "getImage/1000", Image.class);
+		ResponseEntity<Image> responseEntity = restTemplate.getForEntity(URL+ "getImage/1000000", Image.class);
 		int statusCode = responseEntity.getStatusCodeValue();
 		Image image = responseEntity.getBody();
 		assertNull(image);

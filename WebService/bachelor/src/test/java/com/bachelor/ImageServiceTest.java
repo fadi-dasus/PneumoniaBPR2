@@ -24,7 +24,7 @@ import com.bachelor.dao.ImageRepository;
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
 import com.bachelor.service.ImgService;
-import com.bachelor.utility.IFileManipulation;
+import com.bachelor.utility.files.IFileManipulation;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -120,7 +120,5 @@ public class ImageServiceTest {
 		Assertions.assertEquals(2, loadedList.size());
 
 	}
-
-//	
 
 }

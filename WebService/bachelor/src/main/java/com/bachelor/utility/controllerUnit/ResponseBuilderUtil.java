@@ -1,4 +1,4 @@
-package com.bachelor.controller;
+package com.bachelor.utility.controllerUnit;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bachelor.controller.ImageController;
 import com.bachelor.model.Image;
 import com.bachelor.service.ImgService;
 
@@ -24,7 +25,7 @@ public class ResponseBuilderUtil {
 
 	private static final Logger logger = LogManager.getLogger(ImageController.class);
 
-	ResponseEntity<?> getImageByIdResponseBuilder(Optional<Image> optiona) {
+	public ResponseEntity<?> getImageByIdResponseBuilder(Optional<Image> optiona) {
 		return optiona.map(image -> {
 			try {
 				return ResponseEntity.ok()
@@ -39,7 +40,7 @@ public class ResponseBuilderUtil {
 
 	}
 
-	ResponseEntity<?> submitImageResponseBuilder(Image img) {
+	public ResponseEntity<?> submitImageResponseBuilder(Image img) {
 
 		logger.info("Creating new image with id: {}, path: {}", img.getId(), img.getPhysicalPath());
 		try {
@@ -53,6 +54,7 @@ public class ResponseBuilderUtil {
 	}
 	
 	@Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = NoSuchElementException.class)
+	public
 	 ResponseEntity<?> updateImageHelper(Image image, Integer ifMatch) {
 		 try {
 

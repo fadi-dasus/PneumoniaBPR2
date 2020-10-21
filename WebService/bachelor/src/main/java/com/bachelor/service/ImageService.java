@@ -13,8 +13,8 @@ import com.bachelor.controller.ImageController;
 import com.bachelor.dao.ImageRepository;
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
-import com.bachelor.utility.FoldersPathtUtil;
-import com.bachelor.utility.IFileManipulation;
+import com.bachelor.utility.files.FoldersPathtUtil;
+import com.bachelor.utility.files.IFileManipulation;
 
 @Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
