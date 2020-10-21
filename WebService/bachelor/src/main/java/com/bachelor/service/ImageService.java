@@ -17,8 +17,9 @@ import com.bachelor.utility.files.FoldersPathtUtil;
 import com.bachelor.utility.files.IFileManipulation;
 
 @Service
-@Transactional(isolation = Isolation.READ_COMMITTED)
-public class ImageService implements ImgService {
+@Transactional(isolation = Isolation.READ_COMMITTED, value="jpaTransactionManager")
+public class ImageService implements ImgService
+{
 	private static final Logger logger = LogManager.getLogger(ImageController.class);
 
 	@Autowired

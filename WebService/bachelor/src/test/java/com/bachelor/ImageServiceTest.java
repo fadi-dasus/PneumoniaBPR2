@@ -87,6 +87,7 @@ public class ImageServiceTest {
 		Image mockImage = new Image(1, "mockPath", "Normal", 0);
 		Image updatedImage = new Image(1, "new edited mockPath", "Normal", 0);
 		doReturn(updatedImage).when(fileManipulater).moveImageToItsAppropriateDirectory(any());
+		doNothing().when(repository).update("", "", 1, 1);
 		Image returnedImage = service.update(mockImage);
 
 		Assertions.assertNotNull(returnedImage, "The updated image should not be null");
@@ -100,6 +101,7 @@ public class ImageServiceTest {
 		Image mockImage = new Image(1, "mockPath", "Normal", 0);
 		doThrow(NoSuchFileException.class).when(fileManipulater).moveImageToItsAppropriateDirectory(any());
 		Image returnedImage = service.update(mockImage);
+		
 		Assertions.assertNull(returnedImage, "we should not update if there an exception occurs ");
 	}
 

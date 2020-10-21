@@ -4,8 +4,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.aspectj.lang.annotation.After;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +13,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bachelor.dao.ImageRepository;
 import com.bachelor.model.Image;
@@ -29,6 +31,7 @@ public class ImageIntegrationTest {
 	private static final String URL ="http://localhost:8080/bachelor/image/";
 	
 	@Test
+	@DisplayName("Test Get Image Success")
 	public void testGetImageSuccess () throws Exception{
 		ResponseEntity<Image> responseEntity = restTemplate.getForEntity(URL+ "getImage/2", Image.class);
 		int statusCode = responseEntity.getStatusCodeValue();
@@ -37,7 +40,9 @@ public class ImageIntegrationTest {
 		assertEquals(HttpStatus.OK.value(), statusCode);
 		assertNotNull(image);
 	}
+	
 	@Test
+	@DisplayName("Test Get Image Not Found")
 	public void testGetImageNotFound () throws Exception{
 		ResponseEntity<Image> responseEntity = restTemplate.getForEntity(URL+ "getImage/1000000", Image.class);
 		int statusCode = responseEntity.getStatusCodeValue();
@@ -47,6 +52,7 @@ public class ImageIntegrationTest {
 	}
 	
 	@Test
+	@DisplayName("Test Submit Image")
 	public void testSubmitImage() throws Exception{
 		Image image = new Image("test Path","test Status");
 		ResponseEntity<Image> responseEntity = restTemplate.postForEntity(URL+ "/saubmitImage",image, Image.class);
@@ -60,5 +66,4 @@ public class ImageIntegrationTest {
 		repo.deleteById(resultImage.getId());
 	}	
 
-	
 }

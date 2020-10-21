@@ -3,8 +3,6 @@ package com.bachelor.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
+import com.bachelor.service.IJMSService;
 import com.bachelor.service.ImgService;
 import com.bachelor.utility.CONSTANTS;
 import com.bachelor.utility.controllerUnit.ResponseBuilderUtil;
@@ -30,12 +29,13 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping("/bachelor/image")
 public class ImageController {
 
-	private static final Logger logger = LogManager.getLogger(ImageController.class);
 
 	@Autowired
 	ImgService imageService;
 	@Autowired
 	ResponseBuilderUtil imgUtil;
+	@Autowired
+	IJMSService jmsService;
 
 	@Operation(summary = CONSTANTS.getImageSummary)
 	@GetMapping("/getImage/{id}")
@@ -48,7 +48,7 @@ public class ImageController {
 	@PostMapping("/saubmitImage")
 	public ResponseEntity<?> saubmitImage(@RequestBody Image image) {
 		Image img = imageService.saubmitImage(image);
-//		jmsService.send(img);
+		jmsService.send(img);
 		return imgUtil.submitImageResponseBuilder(img);
 	}
 
