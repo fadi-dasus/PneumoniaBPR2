@@ -2,6 +2,8 @@ package com.bachelor.controller;
 
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,9 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/bachelor/image")
 public class ImageController {
+
+	private static final Logger logger = LogManager.getLogger(ImageController.class);
+
 	@Autowired
 	ImgService imageService;
 	@Autowired
@@ -61,10 +66,9 @@ public class ImageController {
 
 	@PutMapping("/updateStatus")
 	@Operation(summary = CONSTANTS.updateStatusSummary)
-
 	public ResponseEntity<?> updateImageStatus(@RequestBody Image image, @RequestHeader("If-Match") Integer ifMatch) {
-		Optional<Image> existingImage = imageService.getImageById(image.getId());
-		return imgUtil.updateImageHelper(image, ifMatch, existingImage);
+		return imgUtil.updateImageHelper(image,ifMatch);
+		
 
 	}
 

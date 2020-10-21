@@ -2,6 +2,7 @@ package com.bachelor.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bachelor.model.Image;
 import com.bachelor.service.ImgService;
@@ -49,35 +52,31 @@ public class ResponseBuilderUtil {
 		}
 	}
 	
-	
-	 ResponseEntity<?> updateImageHelper(Image image, Integer ifMatch, Optional<Image> existingImage) {
-		return existingImage.map(p -> {
-	            // Compare the etags
-	            if (!p.getVersion().equals(ifMatch)) {
-	                return ResponseEntity.status(HttpStatus.CONFLICT).build();
-	            }
-	            // Update the image
-	            p.setPhysicalPath(image.getPhysicalPath());
-	            p.setStatus(image.getStatus());
-	            p.setVersion(p.getVersion() + 1);	          
+	@Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = NoSuchElementException.class)
+	 ResponseEntity<?> updateImageHelper(Image image, Integer ifMatch) {
+		 try {
 
-	            try {
-	                // Update the product and return an ok response
-	                if (imageService.update(p)) {
-	                    return ResponseEntity.ok()
-	                            .location(new URI("/getImage/" + p.getId()))
-	                            .eTag(Integer.toString(p.getVersion()))
-	                            .body(p);
-	                } else {
-	                    return ResponseEntity.notFound().build();
-	                }
-	            } catch (URISyntaxException e) {
-	                // An error occurred trying to create the location URI, return an error
-	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	            }
+				Optional<Image> existingImage = imageService.getImageById(image.getId());
 
-	        }
-	      ).orElse(ResponseEntity.notFound().build());
+				if (!existingImage.get().getVersion().equals(ifMatch)) {
+					return ResponseEntity.status(HttpStatus.CONFLICT).build();
+				}
+				Image updated = imageService.update(existingImage.get());
+				try {
+					if (updated != null) {
+						return ResponseEntity.ok().location(new URI("/getImage/" + updated.getId()))
+								.eTag(Integer.toString(updated.getVersion())).body(updated);
+					}
+				} catch (URISyntaxException e) {
+					logger.error(e.getMessage());
+					return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+				}
+			} catch (NoSuchElementException e) {
+				logger.error(e.getMessage());
+			}
+			
+			 	return ResponseEntity.notFound().build();
+
 	}
 	
 	

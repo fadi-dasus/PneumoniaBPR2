@@ -35,19 +35,21 @@ public class ImageService implements ImgService {
 	}
 	
 //	@Transactional(isolation=Isolation.READ_COMMITTED)
-	public boolean update(Image img) {
-		boolean flag = false;
+	public Image update(Image img) {
+//		boolean flag = false;
+		Image updatedImage=null;
 		try {
-			Image updatedImage = fileManipulater.moveImageToItsAppropriateDirectory(img);
+		 updatedImage = fileManipulater.moveImageToItsAppropriateDirectory(img);
+		 updatedImage.setVersion(updatedImage.getVersion()+1);
 			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(), updatedImage.getVersion(),
 					updatedImage.getId());
-			flag = true;
+//			flag = true;
 
 		} catch (Exception e) {
-			flag = false;
+//			flag = false;
 			System.out.println(e);
 		}
-		return flag;
+		return updatedImage;
 
 	}
 

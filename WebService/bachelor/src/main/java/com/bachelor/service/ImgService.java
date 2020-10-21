@@ -13,7 +13,7 @@ public interface ImgService {
 
 	void loadDB(ImageDirectory path);
 
-	boolean update(Image img);
+	Image update(Image img);
 
 	void removeAllImagesFromTheTable();
 

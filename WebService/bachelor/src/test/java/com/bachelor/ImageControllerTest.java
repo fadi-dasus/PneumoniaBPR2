@@ -95,21 +95,18 @@ public class ImageControllerTest {
 	void testImagePutSuccess() throws Exception {
 		// Setup mocked service
 		Image puttImage = new Image(1, "mockPath", "Normal");
-		Image mockImage = new Image(1, "mockPath", "Normal", 1);
-		doReturn(Optional.of(mockImage)).when(service).getImageById(1);
-		doReturn(true).when(service).update(any());
+		Image mockgetImage = new Image(1, "mockPath", "Normal", 1);
+		Image mockupdatedImage = new Image(1, "mockPath", "Normal", 2);
 
+		doReturn(Optional.of(mockgetImage)).when(service).getImageById(1);
+		doReturn(mockupdatedImage).when(service).update(any());
+		
 		mockMvc.perform(put("/bachelor/image/updateStatus").contentType(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.IF_MATCH, 1).content(asJsonString(puttImage)))
-
-				// Validate the response code and content type
 				.andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON))
 
-				// Validate the headers
 				.andExpect(header().string(HttpHeaders.ETAG, "\"2\""))
 				.andExpect(header().string(HttpHeaders.LOCATION, "/getImage/1"))
-
-				// Validate the returned fields
 
 				.andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.physicalPath", is("mockPath")))
 				.andExpect(jsonPath("$.status", is("Normal"))).andExpect(jsonPath("$.version", is(2)));
@@ -119,11 +116,11 @@ public class ImageControllerTest {
 	@Test
 	@DisplayName("PUT /image/1 - Version Mismatch")
 	void testImagePutVersionMismatch() throws Exception {
-		// Setup mocked service
 		Image puttImage = new Image(1, "mockPath", "Normal");
-		Image mockImage = new Image(1, "mockPath", "Normal", 2);
-		doReturn(Optional.of(mockImage)).when(service).getImageById(1);
-		doReturn(true).when(service).update(any());
+		Image mockgetImage = new Image(1, "mockPath", "Normal", 2);
+
+		doReturn(Optional.of(mockgetImage)).when(service).getImageById(1);
+		
 
 		mockMvc.perform(put("/bachelor/image/updateStatus").contentType(MediaType.APPLICATION_JSON)
 				.header(HttpHeaders.IF_MATCH, 1).content(asJsonString(puttImage)))
