@@ -2,6 +2,7 @@ package com.bachelor.service;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import com.bachelor.controller.ImageController;
 import com.bachelor.dao.ImageRepository;
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
-import com.bachelor.utility.files.FoldersPathtUtil;
+import com.bachelor.utility.CONSTANTS;
 import com.bachelor.utility.files.IFileManipulation;
 
 @Service
@@ -41,6 +42,7 @@ public class ImageService implements ImgService
 		try {
 			updatedImage = fileManipulater.moveImageToItsAppropriateDirectory(img);
 			updatedImage.setVersion(updatedImage.getVersion() + 1);
+			System.out.println(updatedImage.getPhysicalPath());
 			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(), updatedImage.getVersion(),
 					updatedImage.getId());
 
@@ -69,7 +71,7 @@ public class ImageService implements ImgService
 	public Image saubmitImage(Image img) {
 		img.setVersion(0);
 		Image image = dao
-				.saveAndFlush(new Image(FoldersPathtUtil.temporaryFolderDestination.concat(img.getPhysicalPath()),
+				.saveAndFlush(new Image(CONSTANTS.temporaryFolderDestination.concat(img.getPhysicalPath()),
 						img.getStatus(), img.getVersion()));
 		return image;
 	}

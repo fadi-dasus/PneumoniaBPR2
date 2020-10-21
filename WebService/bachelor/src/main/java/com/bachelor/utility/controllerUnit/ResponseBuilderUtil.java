@@ -53,7 +53,8 @@ public class ResponseBuilderUtil {
 		}
 	}
 	
-	@Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = NoSuchElementException.class)
+	
+	@Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = NoSuchElementException.class,value ="jpaTransactionManager")
 	public
 	 ResponseEntity<?> updateImageHelper(Image image, Integer ifMatch) {
 		 try {
@@ -63,7 +64,7 @@ public class ResponseBuilderUtil {
 				if (!existingImage.get().getVersion().equals(ifMatch)) {
 					return ResponseEntity.status(HttpStatus.CONFLICT).build();
 				}
-				Image updated = imageService.update(existingImage.get());
+				Image updated = imageService.update(image);
 				try {
 					if (updated != null) {
 						return ResponseEntity.ok().location(new URI("/getImage/" + updated.getId()))

@@ -13,12 +13,10 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bachelor.dao.ImageRepository;
 import com.bachelor.model.Image;
-import com.bachelor.utility.files.FoldersPathtUtil;
+import com.bachelor.utility.CONSTANTS;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -60,7 +58,7 @@ public class ImageIntegrationTest {
 		Image resultImage = responseEntity.getBody();
 		assertNotNull(resultImage);
 		System.out.println(resultImage.getPhysicalPath());
-		assertEquals(FoldersPathtUtil.temporaryFolderDestination.concat(image.getPhysicalPath()), resultImage.getPhysicalPath());
+		assertEquals(CONSTANTS.temporaryFolderDestination.concat(image.getPhysicalPath()), resultImage.getPhysicalPath());
 		assertEquals(0, resultImage.getVersion());
 		assertEquals(HttpStatus.CREATED.value(), statusCode);
 		repo.deleteById(resultImage.getId());

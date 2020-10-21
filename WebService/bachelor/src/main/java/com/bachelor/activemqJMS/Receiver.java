@@ -16,7 +16,7 @@ public class Receiver {
 		System.out.println("###################################################################################");
 		LOGGER.info("Image Recieved: " + img);
 		System.out.println("############################################################################");
-		throw new RuntimeException();
+//		throw new RuntimeException();
 	}
 
 }

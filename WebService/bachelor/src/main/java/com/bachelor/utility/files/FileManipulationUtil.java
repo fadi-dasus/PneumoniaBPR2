@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.bachelor.controller.ImageController;
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
+import com.bachelor.utility.CONSTANTS;
 
 @Component
 public class FileManipulationUtil implements IFileManipulation {
@@ -26,44 +27,44 @@ public class FileManipulationUtil implements IFileManipulation {
 			images = Files.walk(Paths.get(dir.getSourceImagePath())).filter(Files::isRegularFile)
 					.map(p -> new Image(p.toString(), dir.getStatus())).collect(Collectors.toList());
 		} catch (IOException e) {
-			logger.info("No files in the directory");
+			logger.error("No files in the directory");
 			e.printStackTrace();
 		}
 		return images;
 	}
 
 	@Override
-	public Image moveImageToItsAppropriateDirectory(Image img) throws NoSuchFileException {
-		String newPath = concatinateString(img);
-		moveToTheCorrectFolder(img.getPhysicalPath(), newPath);
-		img.setPhysicalPath(newPath);
+	public Image moveImageToItsAppropriateDirectory(Image img) {
+		try {
+			String newPath = concatinateString(img);
+			moveToTheCorrectFolder(img.getPhysicalPath(), newPath);
+			img.setPhysicalPath(newPath);
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+		}
 		return img;
 	}
 
-	private void moveToTheCorrectFolder(String oldPath, String newPath) {
+	private void moveToTheCorrectFolder(String oldPath, String newPath) throws IOException {
 		try {
 			Files.move(Paths.get(oldPath), Paths.get(newPath));
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (NoSuchFileException e) {
+			logger.error(e.getMessage());
 		}
 
 	}
 
 	private String concatinateString(Image img) {
-		return img.getStatus().equalsIgnoreCase("Normal") ? concatNormal(img.getPhysicalPath()) : concatPneumonia(img.getPhysicalPath());
-//		if (img.getStatus().equalsIgnoreCase("Normal"))
-//			return concatNormal(img.getPhysicalPath());
-//		else
-//			return concatPneumonia(img.getPhysicalPath());
+		return img.getStatus().equalsIgnoreCase("Normal") ? concatNormal(img.getPhysicalPath())
+				: concatPneumonia(img.getPhysicalPath());
 
 	}
 
 	private String concatPneumonia(String physicalPath) {
-		return FoldersPathtUtil.pneumoniaImagesFolderPath
-				.concat(physicalPath.substring(physicalPath.lastIndexOf("\\")));
+		return CONSTANTS.pneumoniaImagesFolderPath.concat(physicalPath.substring(physicalPath.lastIndexOf("\\")));
 	}
 
 	private String concatNormal(String physicalPath) {
-		return FoldersPathtUtil.normalImagesFolderPath.concat(physicalPath.substring(physicalPath.lastIndexOf("\\")));
+		return CONSTANTS.normalImagesFolderPath.concat(physicalPath.substring(physicalPath.lastIndexOf("\\")));
 	}
 }
