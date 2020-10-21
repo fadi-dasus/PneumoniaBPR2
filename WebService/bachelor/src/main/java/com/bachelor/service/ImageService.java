@@ -18,9 +18,8 @@ import com.bachelor.utility.CONSTANTS;
 import com.bachelor.utility.files.IFileManipulation;
 
 @Service
-@Transactional(isolation = Isolation.READ_COMMITTED, value="jpaTransactionManager")
-public class ImageService implements ImgService
-{
+@Transactional(isolation = Isolation.READ_COMMITTED, value = "jpaTransactionManager")
+public class ImageService implements ImgService {
 	private static final Logger logger = LogManager.getLogger(ImageController.class);
 
 	@Autowired
@@ -70,9 +69,8 @@ public class ImageService implements ImgService
 
 	public Image saubmitImage(Image img) {
 		img.setVersion(0);
-		Image image = dao
-				.saveAndFlush(new Image(CONSTANTS.temporaryFolderDestination.concat(img.getPhysicalPath()),
-						img.getStatus(), img.getVersion()));
+		Image image = dao.saveAndFlush(new Image(CONSTANTS.temporaryFolderDestination.concat(img.getPhysicalPath()),
+				img.getStatus(), img.getVersion()));
 		return image;
 	}
 

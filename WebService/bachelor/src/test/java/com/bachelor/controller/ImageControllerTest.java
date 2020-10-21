@@ -1,4 +1,4 @@
-package com.bachelor;
+package com.bachelor.controller;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;

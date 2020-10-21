@@ -1,4 +1,4 @@
-package com.bachelor;
+package com.bachelor.integration;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
