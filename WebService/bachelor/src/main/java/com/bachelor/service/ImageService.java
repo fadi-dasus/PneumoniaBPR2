@@ -1,5 +1,6 @@
 package com.bachelor.service;
 
+import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,12 +42,11 @@ public class ImageService implements ImgService {
 		try {
 			updatedImage = fileManipulater.moveImageToItsAppropriateDirectory(img);
 			updatedImage.setVersion(updatedImage.getVersion() + 1);
-			System.out.println(updatedImage.getPhysicalPath());
 			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(), updatedImage.getVersion(),
 					updatedImage.getId());
-
-		} catch (Exception e) {
-			logger.error(e.getMessage());
+		}
+		 catch (Exception e) {
+			logger.error(e);
 		}
 		return updatedImage;
 

@@ -49,12 +49,12 @@ public class FileManipulationUtil implements IFileManipulation {
 		try {
 			Files.move(Paths.get(oldPath), Paths.get(newPath));
 		} catch (NoSuchFileException e) {
-			logger.error(e.getMessage());
+			logger.error(e.getStackTrace());
 		}
 
 	}
 
-	private String concatinateString(Image img) {
+	public String concatinateString(Image img) {
 		return img.getStatus().equalsIgnoreCase("Normal") ? concatNormal(img.getPhysicalPath())
 				: concatPneumonia(img.getPhysicalPath());
 
