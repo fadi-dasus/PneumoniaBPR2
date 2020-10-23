@@ -36,7 +36,8 @@ public class ImageService implements ImgService {
 	public Iterable<Image> getAllImages() {
 		return dao.findAll();
 	}
-
+	
+	@Transactional(rollbackFor = NoSuchFileException.class )
 	public Image update(Image img) {
 		Image updatedImage = null;
 		try {

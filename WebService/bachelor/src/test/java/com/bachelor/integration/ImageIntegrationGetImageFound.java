@@ -26,7 +26,7 @@ public class ImageIntegrationGetImageFound {
 	private TestRestTemplate restTemplate;
 	@Autowired
 	ImageRepository repo;
-	private static final String URL = "http://localhost:8080/bachelor/image/";
+	private static final String URL = "http://localhost:8081/bachelor/image/";
 
 	private Image img = new Image("mockPath","MockStatus",1);
 

@@ -26,7 +26,7 @@ public class ImageIntegrationSubmiteImageSuccess {
 	private TestRestTemplate restTemplate;
 	@Autowired
 	ImageRepository repo;
-	private static final String URL = "http://localhost:8080/bachelor/image/";
+	private static final String URL = "http://localhost:8081/bachelor/image/";
 
 	private Image image = new Image("test Path", "test Status");
 	private int id = 0;
@@ -35,7 +35,7 @@ public class ImageIntegrationSubmiteImageSuccess {
 	@DisplayName("Test Submit Image")
 	public void testSubmitImage() throws Exception {
 		ResponseEntity<Image> responseEntity = restTemplate.postForEntity(URL + "/saubmitImage", this.image,
-				Image.class);
+				Image.class);		
 		int statusCode = responseEntity.getStatusCodeValue();
 		Image resultImage = responseEntity.getBody();
 		this.id = resultImage.getId();

@@ -1,9 +1,5 @@
 package com.bachelor.util;
 
-import static org.mockito.Mockito.doReturn;
-
-import java.util.Optional;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -24,7 +24,7 @@ public class ImageInegrationGetNotFound {
 	private TestRestTemplate restTemplate;
 	@Autowired
 	ImageRepository repo;
-	private static final String URL = "http://localhost:8080/bachelor/image/";
+	private static final String URL = "http://localhost:8081/bachelor/image/";
 
 	
 	@Test
