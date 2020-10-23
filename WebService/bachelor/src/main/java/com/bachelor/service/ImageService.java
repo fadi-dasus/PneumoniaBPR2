@@ -46,7 +46,7 @@ public class ImageService implements ImgService {
 			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(), updatedImage.getVersion(),
 					updatedImage.getId());
 		}
-		 catch (Exception e) {
+		 catch (NoSuchFileException e) {
 			logger.error(e);
 		}
 		return updatedImage;

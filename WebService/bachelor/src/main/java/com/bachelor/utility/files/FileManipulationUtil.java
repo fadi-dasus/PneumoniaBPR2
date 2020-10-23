@@ -34,7 +34,7 @@ public class FileManipulationUtil implements IFileManipulation {
 	}
 
 	@Override
-	public Image moveImageToItsAppropriateDirectory(Image img) {
+	public Image moveImageToItsAppropriateDirectory(Image img) throws NoSuchFileException {
 		try {
 			String newPath = concatinateString(img);
 			moveToTheCorrectFolder(img.getPhysicalPath(), newPath);
@@ -44,11 +44,11 @@ public class FileManipulationUtil implements IFileManipulation {
 		}
 		return img;
 	}
-
-	private void moveToTheCorrectFolder(String oldPath, String newPath) throws IOException {
+	
+	private void moveToTheCorrectFolder(String oldPath, String newPath) throws NoSuchFileException  {
 		try {
 			Files.move(Paths.get(oldPath), Paths.get(newPath));
-		} catch (NoSuchFileException e) {
+		} catch (IOException e) {
 			logger.error(e.getStackTrace());
 		}
 
