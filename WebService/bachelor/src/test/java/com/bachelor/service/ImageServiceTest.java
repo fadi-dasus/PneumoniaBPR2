@@ -89,7 +89,6 @@ public class ImageServiceTest {
 		doReturn(updatedImage).when(fileManipulater).moveImageToItsAppropriateDirectory(any());
 		doNothing().when(repository).update("", "", 1, 1);
 		Image returnedImage = service.update(mockImage);
-
 		Assertions.assertNotNull(returnedImage, "The updated image should not be null");
 		Assertions.assertEquals(1, returnedImage.getVersion().intValue(),
 				"The version for the updated image should be 1");
