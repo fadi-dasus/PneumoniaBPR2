@@ -23,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.bachelor.dao.ImageRepository;
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
-import com.bachelor.service.ImgService;
+import com.bachelor.service.image.ImgService;
 import com.bachelor.utility.files.IFileManipulation;
 
 @ExtendWith(SpringExtension.class)

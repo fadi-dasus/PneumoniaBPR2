@@ -1,4 +1,4 @@
-package com.bachelor.service;
+package com.bachelor.service.image;
 
 import java.util.List;
 import java.util.Optional;

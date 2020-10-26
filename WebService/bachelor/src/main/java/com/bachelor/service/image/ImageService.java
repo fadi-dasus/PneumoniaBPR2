@@ -1,4 +1,4 @@
-package com.bachelor.service;
+package com.bachelor.service.image;
 
 import java.nio.file.NoSuchFileException;
 import java.util.List;

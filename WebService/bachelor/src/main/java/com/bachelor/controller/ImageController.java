@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
-import com.bachelor.service.IJMSService;
-import com.bachelor.service.ImgService;
+import com.bachelor.service.image.ImgService;
+import com.bachelor.service.jms.IJMSService;
 import com.bachelor.utility.CONSTANTS;
 import com.bachelor.utility.controllerUnit.ResponseBuilderUtil;
 

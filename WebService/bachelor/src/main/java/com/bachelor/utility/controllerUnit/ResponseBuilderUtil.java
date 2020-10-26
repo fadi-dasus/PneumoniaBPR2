@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bachelor.controller.ImageController;
 import com.bachelor.model.Image;
-import com.bachelor.service.ImgService;
+import com.bachelor.service.image.ImgService;
 
 @Component
 public class ResponseBuilderUtil {

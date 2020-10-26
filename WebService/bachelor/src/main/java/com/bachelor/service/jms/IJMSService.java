@@ -1,4 +1,4 @@
-package com.bachelor.service;
+package com.bachelor.service.jms;
 
 import com.bachelor.model.Image;
 
