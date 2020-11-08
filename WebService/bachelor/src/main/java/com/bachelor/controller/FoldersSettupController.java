@@ -17,7 +17,7 @@ public class FoldersSettupController {
 
 	@Operation(summary = CONSTANTS.folderSummary)
 	@GetMapping("/getFoldersPath")
-	public ResponseEntity<String> insertNewImage() {
+	public ResponseEntity<String> getFoldersPath() {
 
 		return new ResponseEntity<String>(CONSTANTS.temporaryFolderDestination, HttpStatus.OK);
 	}

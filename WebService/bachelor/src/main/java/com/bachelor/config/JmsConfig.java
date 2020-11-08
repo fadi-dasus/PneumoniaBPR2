@@ -48,7 +48,7 @@ public class JmsConfig {
 
 		CachingConnectionFactory factory = new CachingConnectionFactory(
 				new ActiveMQConnectionFactory(user, password, brokerUrl));
-//		factory.setClientId("detictionFront");
+//		factory.setClientId("detection ");
 		factory.setSessionCacheSize(50);
 		return factory;
 	}
