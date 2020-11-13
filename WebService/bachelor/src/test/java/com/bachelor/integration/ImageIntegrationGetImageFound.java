@@ -38,7 +38,7 @@ public class ImageIntegrationGetImageFound {
 	@Test
 	@DisplayName("Test Get Image Success")
 	public void testGetImageSuccess() throws Exception {
-		ResponseEntity<Image> responseEntity = restTemplate.getForEntity(URL + "getImage/" + this.img.getId(),
+		ResponseEntity<Image> responseEntity = restTemplate.getForEntity(URL + "getImage/?id=" + this.img.getId(),
 				Image.class);
 		int statusCode = responseEntity.getStatusCodeValue();
 		Image image = responseEntity.getBody();

@@ -30,7 +30,7 @@ public class ImageInegrationGetNotFound {
 	@Test
 	@DisplayName("Test Get Image Not Found")
 	public void testGetImageNotFound() throws Exception {
-		ResponseEntity<Image> responseEntity = restTemplate.getForEntity(URL + "getImage/0" , Image.class);
+		ResponseEntity<Image> responseEntity = restTemplate.getForEntity(URL + "getImage/?id=0" , Image.class);
 		int statusCode = responseEntity.getStatusCodeValue();
 		Image image = responseEntity.getBody();
 		assertNull(image);

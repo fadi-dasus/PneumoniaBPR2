@@ -45,7 +45,7 @@ public class ImageControllerTest {
 		Image mockImage = new Image(1, "mockPath", "Normal", 1);
 		doReturn(Optional.of(mockImage)).when(service).getImageById(1);
 
-		mockMvc.perform(get("/bachelor/image/getImage/{id}", 1).accept(MediaType.APPLICATION_JSON))
+		mockMvc.perform(get("/bachelor/image/getImage/?id=1", 1).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(header().string(HttpHeaders.ETAG, "\"1\""))
 				.andExpect(header().string(HttpHeaders.LOCATION, "/getImage/1"))
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))

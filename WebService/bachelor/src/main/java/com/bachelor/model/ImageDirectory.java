@@ -3,6 +3,10 @@ package com.bachelor.model;
 public class ImageDirectory {
 	String sourceImagePath;
 	String imageType;
+	
+	public ImageDirectory() {
+		
+	}
 
 	public ImageDirectory(String temporaryPath, String status) {
 		this.sourceImagePath = temporaryPath;

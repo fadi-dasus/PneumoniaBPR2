@@ -1,6 +1,7 @@
 package com.bachelor.service.image;
 
 import java.nio.file.NoSuchFileException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +43,7 @@ public class ImageService implements ImgService {
 		Image updatedImage = null;
 		try {
 			updatedImage = fileManipulater.moveImageToItsAppropriateDirectory(img);
+			System.out.println(updatedImage.toString());
 			updatedImage.setVersion(updatedImage.getVersion() + 1);
 			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(), updatedImage.getVersion(),
 					updatedImage.getId());
@@ -54,7 +56,7 @@ public class ImageService implements ImgService {
 	}
 
 	public List<Image> loadDB(ImageDirectory dir) {
-		List<Image> addedList = null;
+		List<Image> addedList = new ArrayList<Image>();
 		List<Image> list = fileManipulater.getAllImagesInThePath(dir);
 		if (list != null) {
 			addedList = dao.saveAll(list);

@@ -60,11 +60,12 @@ public class ResponseBuilderUtil {
 		 try {
 
 				Optional<Image> existingImage = imageService.getImageById(image.getId());
-
+		
 				if (!existingImage.get().getVersion().equals(ifMatch)) {
 					return ResponseEntity.status(HttpStatus.CONFLICT).build();
 				}
-				Image updated = imageService.update(image);
+				Image updated = imageService.update(existingImage.get());
+				
 				try {
 					if (updated != null) {
 						return ResponseEntity.ok().location(new URI("/getImage/" + updated.getId()))

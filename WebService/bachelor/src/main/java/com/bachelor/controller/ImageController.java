@@ -8,12 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bachelor.model.Image;
@@ -38,9 +38,9 @@ public class ImageController {
 	IJMSService jmsService;
 
 	@Operation(summary = CONSTANTS.getImageSummary)
-	@GetMapping("/getImage/{id}")
-	public ResponseEntity<?> getImageById(@PathVariable Integer id) {
-		Optional<Image> img = imageService.getImageById(id);
+	@GetMapping("/getImage")
+	public ResponseEntity<?> getImageById(@RequestParam Integer id) {
+				Optional<Image> img = imageService.getImageById(id);
 		return imgUtil.getImageByIdResponseBuilder(img);
 	}
 
@@ -63,8 +63,8 @@ public class ImageController {
 	@PostMapping("/loadPicturesIntoDB")
 	public ResponseEntity<?> loadDB(@RequestBody ImageDirectory path) {
 		List<Image> list = imageService.loadDB(path);
-		if (list.size() == 0) {
-			new ResponseEntity<String>(" No files found", HttpStatus.NO_CONTENT);
+		if (list.size() == 0 ) {
+			return new ResponseEntity<String>(" No files found", HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<String>(list.size() + CONSTANTS.loadDB, HttpStatus.OK);
 	}
