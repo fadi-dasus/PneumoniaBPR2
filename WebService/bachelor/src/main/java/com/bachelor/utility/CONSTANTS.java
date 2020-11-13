@@ -12,7 +12,7 @@ public class CONSTANTS {
 	public static final String loadDB = " images have been loaded with all the files from the provided path ";
 	public static final String normalImagesFolderPath = "E:\\7 semester\\BP\\implementation\\database\\NORMAL";
 	public static final String pneumoniaImagesFolderPath = "E:\\7 semester\\BP\\implementation\\database\\PNEUMONIA";
-	public static final String temporaryFolderDestination = "E:\\7 semester\\BP\\implementation\\database\\temp";
+	public static final String temporaryFolderDestination = "E:\\7 semester\\BP\\implementation\\database\\temp\\";
 	
 
 
