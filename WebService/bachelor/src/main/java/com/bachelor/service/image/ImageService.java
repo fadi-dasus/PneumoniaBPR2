@@ -64,13 +64,10 @@ public class ImageService implements ImgService {
 	}
 
 	public List<Image> loadDB(ImageDirectory dir) {
-		List<Image> addedList = new ArrayList<Image>();
 		List<Image> list = fileManipulater.getAllImagesInThePath(dir);
-		if (list != null) {
-			addedList = dao.saveAll(list);
-		} else
-			logger.info("No images in the distination");
-		return addedList;
+		if (list.size() > 0) 
+			  dao.saveAll(list);
+		return list;
 	}
 
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,10 +20,10 @@ import com.bachelor.utility.CONSTANTS;
 @Component
 public class FileManipulationUtil implements IFileManipulation {
 	private static final Logger logger = LogManager.getLogger(ImageController.class);
+	List<Image> images = new ArrayList<Image>();
 
 	@Override
 	public List<Image> getAllImagesInThePath(ImageDirectory dir) {
-		List<Image> images = null;
 		try {
 			images = Files.walk(Paths.get(dir.getSourceImagePath())).filter(Files::isRegularFile)
 					.map(p -> new Image(p.toString(), dir.getStatus())).collect(Collectors.toList());
