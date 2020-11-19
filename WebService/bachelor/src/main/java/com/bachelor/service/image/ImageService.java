@@ -43,7 +43,6 @@ public class ImageService implements ImgService {
 		Image updatedImage = null;
 		try {
 			updatedImage = fileManipulater.moveImageToItsAppropriateDirectory(img);
-			System.out.println(updatedImage.toString());
 			updatedImage.setVersion(updatedImage.getVersion() + 1);
 			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(), updatedImage.getVersion(),
 					updatedImage.getId());

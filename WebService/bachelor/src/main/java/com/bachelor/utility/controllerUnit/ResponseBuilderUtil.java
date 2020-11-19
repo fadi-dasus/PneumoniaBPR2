@@ -25,8 +25,8 @@ public class ResponseBuilderUtil {
 
 	private static final Logger logger = LogManager.getLogger(ImageController.class);
 
-	public ResponseEntity<?> getImageByIdResponseBuilder(Optional<Image> optiona) {
-		return optiona.map(image -> {
+	public ResponseEntity<?> getImageByIdResponseBuilder(Optional<Image> optional) {
+		return optional.map(image -> {
 			try {
 				return ResponseEntity.ok()
 						.eTag(Integer.toString(image.getVersion()))
@@ -75,7 +75,9 @@ public class ResponseBuilderUtil {
 					logger.error(e.getMessage());
 					return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 				}
-			} catch (NoSuchElementException e) {
+			} 
+		 // for the optional object 
+		 catch (NoSuchElementException e) {
 				logger.error(e.getMessage());
 			}
 			
