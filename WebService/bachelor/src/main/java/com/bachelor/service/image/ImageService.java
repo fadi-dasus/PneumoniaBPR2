@@ -48,17 +48,13 @@ public class ImageService implements ImgService {
 	
 	
 	@Transactional(rollbackFor = NoSuchFileException.class)
-	public Image update(Image img) {
-		System.out.println(img.getStatus());
-		Image updatedImage = null;
-		try {
+	public Image update(Image img) throws NoSuchFileException {
+		Image updatedImage = new Image();
 			updatedImage = fileManipulater.moveImageToItsAppropriateDirectory(img);
 			updatedImage.setVersion(updatedImage.getVersion() + 1);
-			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(), updatedImage.getVersion(),
+			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(), updatedImage.getVersion() +1,
 					updatedImage.getId());
-		} catch (NoSuchFileException e) {
-			logger.error(e);
-		}
+		
 		return updatedImage;
 
 	}

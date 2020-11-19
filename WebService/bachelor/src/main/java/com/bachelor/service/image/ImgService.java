@@ -1,5 +1,6 @@
 package com.bachelor.service.image;
 
+import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +15,7 @@ public interface ImgService {
 
 	List<Image> loadDB(ImageDirectory path);
 
-	Image update(Image img);
+	Image update(Image img) throws NoSuchFileException;
 
 	void removeAllImagesFromTheTable();
 

@@ -73,6 +73,7 @@ public class ImageController {
 	@PutMapping("/updateStatus")
 	@Operation(summary = CONSTANTS.updateStatusSummary)
 	public ResponseEntity<?> updateImageStatus(@RequestBody Image image, @RequestHeader("If-Match") Integer ifMatch) {
+		
 		return imgUtil.updateImageHelper(image, ifMatch);
 
 	}

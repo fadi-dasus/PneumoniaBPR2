@@ -2,6 +2,7 @@ package com.bachelor.utility.controllerUnit;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.NoSuchFileException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -32,6 +33,7 @@ public class ResponseBuilderUtil {
 			return serverErrorResponseGenerator(e);
 		}
 	}
+
 	
 	public ResponseEntity<?> getImageByIdResponseBuilder(Optional<Image> optional) {
 		return optional.map(image -> {
@@ -41,16 +43,14 @@ public class ResponseBuilderUtil {
 			} catch (URISyntaxException e) {
 				return serverErrorResponseGenerator(e);
 			}
-
 		}).orElse(ResponseEntity.notFound().build());
-
 	}
+
 	
-
 	@Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = NoSuchElementException.class, value = "jpaTransactionManager")
-	public ResponseEntity<?> updateImageHelper(Image image, Integer ifMatch) {
+	public ResponseEntity<?> updateImageHelper(Image image, Integer ifMatch)  {
+		
 		try {
-
 			Optional<Image> existingImage = imageService.getImageById(image.getId());
 
 			if (!existingImage.get().getVersion().equals(ifMatch)) {
@@ -65,12 +65,10 @@ public class ResponseBuilderUtil {
 							.eTag(Integer.toString(updated.getVersion())).body(updated);
 				}
 			} catch (URISyntaxException e) {
-				logger.error(e.getMessage());
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+				return serverErrorResponseGenerator(e);
 			}
 		}
-		// for the optional object
-		catch (NoSuchElementException e) {
+		catch (NoSuchElementException | NoSuchFileException e) {
 			logger.error(e.getMessage());
 		}
 
@@ -87,8 +85,5 @@ public class ResponseBuilderUtil {
 		logger.error(e.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
-
-
-
 
 }
