@@ -24,6 +24,7 @@ import com.bachelor.utility.CONSTANTS;
 import com.bachelor.utility.controllerUnit.ResponseBuilderUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/bachelor/image")
@@ -55,9 +56,9 @@ public class ImageController {
 
 	@Operation(summary = CONSTANTS.getAllImagesSummary)
 	@GetMapping("/getAllImages")
-	public ResponseEntity<Iterable<Image>> getAllImages() {
-		Iterable<Image> img = imageService.getAllImages();
-		return new ResponseEntity<Iterable<Image>>(img, HttpStatus.FOUND);
+	public ResponseEntity<Flux<Image>> getAllImages() {
+		Flux<Image> fluxImages = Flux.fromIterable(imageService.getAllImages());
+		return new ResponseEntity<Flux<Image>>(fluxImages, HttpStatus.FOUND);
 	}
 
 	@Operation(summary = CONSTANTS.loadDbSummary)
