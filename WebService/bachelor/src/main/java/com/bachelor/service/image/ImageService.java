@@ -1,7 +1,6 @@
 package com.bachelor.service.image;
 
 import java.nio.file.NoSuchFileException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +49,7 @@ public class ImageService implements ImgService {
 	
 	@Transactional(rollbackFor = NoSuchFileException.class)
 	public Image update(Image img) {
+		System.out.println(img.getStatus());
 		Image updatedImage = null;
 		try {
 			updatedImage = fileManipulater.moveImageToItsAppropriateDirectory(img);

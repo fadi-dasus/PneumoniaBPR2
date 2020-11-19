@@ -64,6 +64,7 @@ public class ResponseBuilderUtil {
 				if (!existingImage.get().getVersion().equals(ifMatch)) {
 					return ResponseEntity.status(HttpStatus.CONFLICT).build();
 				}
+				existingImage.get().setStatus(image.getStatus());
 				Image updated = imageService.update(existingImage.get());
 				
 				try {
