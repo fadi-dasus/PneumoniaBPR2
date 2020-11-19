@@ -29,7 +29,6 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping("/bachelor/image")
 public class ImageController {
 
-
 	@Autowired
 	ImgService imageService;
 	@Autowired
@@ -37,6 +36,7 @@ public class ImageController {
 	@Autowired
 	IJMSService jmsService;
 
+	
 	@Operation(summary = CONSTANTS.getImageSummary)
 	@GetMapping("/getImage")
 	public ResponseEntity<?> getImageById(@RequestParam Integer id) {
@@ -44,6 +44,7 @@ public class ImageController {
 		return imgUtil.getImageByIdResponseBuilder(img);
 	}
 
+	
 	@Operation(summary = CONSTANTS.saubmitImageSummary)
 	@PostMapping("/saubmitImage")
 	public ResponseEntity<?> saubmitImage(@RequestBody Image image) {

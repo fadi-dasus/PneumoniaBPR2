@@ -73,14 +73,14 @@ public class ImageServiceTest {
 	@Test
 	@DisplayName("Test save image")
 	void testSave() {
-		Image mockImage = new Image(1, "mockPath", "Normal", 1);
+		Image mockImage = new Image(1, "mockPath", "Normal", 0);
 		doReturn(mockImage).when(repository).saveAndFlush(any());
-
 		Image returnedImage = service.saubmitImage(mockImage);
 		Assertions.assertNotNull(returnedImage, "The saved image should not be null");
 		Assertions.assertEquals(0, returnedImage.getVersion().intValue(), "The version for a new product should be 0");
 	}
 
+	
 	@Test
 	@DisplayName("Test update image success")
 	void testUpdateSuccess() throws NoSuchFileException {
@@ -89,6 +89,7 @@ public class ImageServiceTest {
 		doReturn(updatedImage).when(fileManipulater).moveImageToItsAppropriateDirectory(any());
 		doNothing().when(repository).update("", "", 1, 1);
 		Image returnedImage = service.update(mockImage);
+		
 		Assertions.assertNotNull(returnedImage, "The updated image should not be null");
 		Assertions.assertEquals(1, returnedImage.getVersion().intValue(),
 				"The version for the updated image should be 1");
@@ -100,7 +101,7 @@ public class ImageServiceTest {
 		Image mockImage = new Image(1, "mockPath", "Normal", 0);
 		doThrow(NoSuchFileException.class).when(fileManipulater).moveImageToItsAppropriateDirectory(any());
 		Image returnedImage = service.update(mockImage);
-		
+	
 		Assertions.assertNull(returnedImage, "we should not update if there an exception occurs ");
 	}
 

@@ -40,7 +40,7 @@ public class ImageIntegrationSubmiteImageSuccess {
 		Image resultImage = responseEntity.getBody();
 		this.id = resultImage.getId();
 		assertNotNull(resultImage);
-		assertEquals(CONSTANTS.temporaryFolderDestination.concat(this.image.getPhysicalPath()),
+		assertEquals(this.image.getPhysicalPath(),
 				resultImage.getPhysicalPath());
 		assertEquals(0, resultImage.getVersion());
 		assertEquals(HttpStatus.CREATED.value(), statusCode);

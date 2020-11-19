@@ -16,12 +16,12 @@ import com.bachelor.controller.ImageController;
 import com.bachelor.dao.ImageRepository;
 import com.bachelor.model.Image;
 import com.bachelor.model.ImageDirectory;
-import com.bachelor.utility.CONSTANTS;
 import com.bachelor.utility.files.IFileManipulation;
 
 @Service
 @Transactional(isolation = Isolation.READ_COMMITTED, value = "jpaTransactionManager")
 public class ImageService implements ImgService {
+	
 	private static final Logger logger = LogManager.getLogger(ImageController.class);
 
 	@Autowired
@@ -37,8 +37,18 @@ public class ImageService implements ImgService {
 	public Iterable<Image> getAllImages() {
 		return dao.findAll();
 	}
+
+	public void removeAllImagesFromTheTable() {
+		dao.deleteAll();
+
+	}
 	
-	@Transactional(rollbackFor = NoSuchFileException.class )
+	public Image saubmitImage(Image img) {
+		return dao.saveAndFlush(new Image(img.getPhysicalPath(), img.getStatus(), 0));
+	}
+	
+	
+	@Transactional(rollbackFor = NoSuchFileException.class)
 	public Image update(Image img) {
 		Image updatedImage = null;
 		try {
@@ -46,8 +56,7 @@ public class ImageService implements ImgService {
 			updatedImage.setVersion(updatedImage.getVersion() + 1);
 			dao.update(updatedImage.getPhysicalPath(), updatedImage.getStatus(), updatedImage.getVersion(),
 					updatedImage.getId());
-		}
-		 catch (NoSuchFileException e) {
+		} catch (NoSuchFileException e) {
 			logger.error(e);
 		}
 		return updatedImage;
@@ -64,16 +73,5 @@ public class ImageService implements ImgService {
 		return addedList;
 	}
 
-	public void removeAllImagesFromTheTable() {
-		dao.deleteAll();
-
-	}
-
-	public Image saubmitImage(Image img) {
-		img.setVersion(0);
-		Image image = dao.saveAndFlush(new Image(CONSTANTS.temporaryFolderDestination.concat(img.getPhysicalPath()),
-				img.getStatus(), img.getVersion()));
-		return image;
-	}
 
 }
