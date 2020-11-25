@@ -17,7 +17,7 @@ public class TracingAspect {
 	
 	@Before("execution(* getFoldersPath())")
 	public void entering(JoinPoint joinPoint) {
-		System.out.println("//////////////////////////&&&&&&&&&&&&&&&&&&&&&&//////////////////////////////////////////////////");
+		System.out.println("//////////////////////////Hello From Aspect Oriented Programming //////////////////////////////////////////////////");
 		LOGGER.info("methodEntered Recieved: " + joinPoint.getStaticPart().getSignature().toLongString());
 
 	}
