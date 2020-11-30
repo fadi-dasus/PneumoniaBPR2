@@ -64,6 +64,7 @@ public class ResponseBuilderUtil {
 
 			try {
 				if (updated != null) {
+					updated.setIssuer(image.getIssuer());
 					jmsService.sendToUser(updated);
 					return ResponseEntity.ok().location(new URI("/getImage/" + updated.getId()))
 							.eTag(Integer.toString(updated.getVersion())).body(updated);

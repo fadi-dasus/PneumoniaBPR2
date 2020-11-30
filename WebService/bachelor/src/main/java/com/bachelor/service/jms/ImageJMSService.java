@@ -22,7 +22,7 @@ public void send(Image image){
 
 @Transactional("jmsTransactionManager")
 public void sendToUser(Image image){
-	jmsTemplate.convertAndSend(image.getId().toString(),image);
+	jmsTemplate.convertAndSend(image.getIssuer(),image);
 }
 
 

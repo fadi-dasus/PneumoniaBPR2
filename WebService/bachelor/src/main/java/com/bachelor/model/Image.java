@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 @Entity
@@ -26,8 +27,24 @@ public class Image {
 	@Column(name = "version")
 	private Integer version;
 
+	@Transient
+	private String issuer;
+
+	
+
 	public Image() {
 
+	}
+	public Image(String physicalPath, String status) {
+		this.status = status;
+		this.physicalPath = physicalPath;
+
+	}
+
+	public Image(String physicalPath, String status, String issuer) {
+		this.status = status;
+		this.physicalPath = physicalPath;
+		this.issuer = issuer;
 	}
 
 	public Image(Integer id, String physicalPath, String status, Integer version) {
@@ -36,25 +53,33 @@ public class Image {
 		this.status = status;
 		this.version = version;
 	}
+	
+	public Image(Integer id, String physicalPath, String status, Integer version,String issuer) {
+		this.Id = id;
+		this.physicalPath = physicalPath;
+		this.status = status;
+		this.version = version;
+		this.issuer = issuer;
+	}
 
 	public Image(String physicalPath, String status, Integer version) {
 		this.physicalPath = physicalPath;
 		this.status = status;
 		this.version = version;
 	}
-
-	public Image(String physicalPath, String status) {
-		this.status = status;
-		this.physicalPath = physicalPath;
-
-	}
+	
 
 	public Image(Integer id, String physicalPath, String status) {
 		this.Id = id;
-
 		this.status = status;
 		this.physicalPath = physicalPath;
-
+	}
+	
+	public Image(Integer id, String physicalPath, String status, String issuer) {
+		this.Id = id;
+		this.status = status;
+		this.physicalPath = physicalPath;
+		this.issuer = issuer;
 	}
 
 	public Integer getId() {
@@ -88,11 +113,19 @@ public class Image {
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
+	public String getIssuer() {
+		return issuer;
+	}
+
+	public void setIssuer(String issuer) {
+		this.issuer = issuer;
+	}
 
 	@Override
 	public String toString() {
 		return "Image [Id=" + Id + ", physicalPath=" + physicalPath + ", status=" + status + ", version=" + version
-				+ "]";
+				+ ", issuer=" + issuer + "]";
 	}
+	
 
 }

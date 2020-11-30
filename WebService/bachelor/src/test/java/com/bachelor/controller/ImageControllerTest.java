@@ -94,9 +94,9 @@ public class ImageControllerTest {
 	@DisplayName("PUT /image/1 - Success")
 	void testImagePutSuccess() throws Exception {
 		// Setup mocked service
-		Image puttImage = new Image(1, "mockPath", "Normal");
-		Image mockgetImage = new Image(1, "mockPath", "Normal", 1);
-		Image mockupdatedImage = new Image(1, "mockPath", "Normal", 2);
+		Image puttImage = new Image(1, "mockPath", "Normal","me");
+		Image mockgetImage = new Image(1, "mockPath", "Normal", 1,"me");
+		Image mockupdatedImage = new Image(1, "mockPath", "Normal", 2,"me");
 
 		doReturn(Optional.of(mockgetImage)).when(service).getImageById(1);
 		doReturn(mockupdatedImage).when(service).update(any());
