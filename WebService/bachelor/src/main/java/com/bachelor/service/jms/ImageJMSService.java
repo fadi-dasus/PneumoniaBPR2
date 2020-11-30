@@ -19,4 +19,11 @@ private JmsTemplate jmsTemplate;
 public void send(Image image){
 	jmsTemplate.convertAndSend(IMAGE_QUEUE,image);
 }
+
+@Transactional("jmsTransactionManager")
+public void sendToUser(Image image){
+	jmsTemplate.convertAndSend(image.getId().toString(),image);
+}
+
+
 }

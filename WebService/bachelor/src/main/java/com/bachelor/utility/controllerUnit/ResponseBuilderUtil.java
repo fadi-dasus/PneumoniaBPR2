@@ -18,11 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bachelor.controller.ImageController;
 import com.bachelor.model.Image;
 import com.bachelor.service.image.ImgService;
+import com.bachelor.service.jms.IJMSService;
 
 @Component
 public class ResponseBuilderUtil {
 	@Autowired
 	ImgService imageService;
+	@Autowired
+	IJMSService jmsService;
 
 	private static final Logger logger = LogManager.getLogger(ImageController.class);
 
@@ -61,6 +64,7 @@ public class ResponseBuilderUtil {
 
 			try {
 				if (updated != null) {
+					jmsService.sendToUser(updated);
 					return ResponseEntity.ok().location(new URI("/getImage/" + updated.getId()))
 							.eTag(Integer.toString(updated.getVersion())).body(updated);
 				}

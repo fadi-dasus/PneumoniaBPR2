@@ -50,7 +50,9 @@ public class ImageController {
 	@PostMapping("/saubmitImage")
 	public ResponseEntity<?> saubmitImage(@RequestBody Image image) {
 		Image img = imageService.saubmitImage(image);
+		if(img!=null) {
 		jmsService.send(img);
+		}
 		return imgUtil.submitImageResponseBuilder(img);
 	}
 

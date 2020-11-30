@@ -5,4 +5,6 @@ import com.bachelor.model.Image;
 public interface IJMSService {
 	void send(Image image);
 
+	void sendToUser(Image image);
+
 }

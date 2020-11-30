@@ -7,12 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.bachelor.activemqJMS.Receiver;
-
 @Component
 @Aspect
 public class TracingAspect {
-	private static final Logger LOGGER = LoggerFactory.getLogger(Receiver.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TracingAspect.class);
 	
 	
 	@Before("execution(* getFoldersPath())")
