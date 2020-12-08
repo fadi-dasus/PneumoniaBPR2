@@ -45,14 +45,13 @@ public class JmsConfig {
 
 	@Bean
 	public CachingConnectionFactory connectionFactory() {
-
 		CachingConnectionFactory factory = new CachingConnectionFactory(
 				new ActiveMQConnectionFactory(user, password, brokerUrl));
-//		factory.setClientId("detection ");
 		factory.setSessionCacheSize(50);
 		return factory;
 	}
 
+	
 	@Bean
 	public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
 		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
@@ -60,7 +59,7 @@ public class JmsConfig {
 		factory.setMessageConverter(jacksonJmsMessageConverter());
 		factory.setTransactionManager(jmsTransactionManager());
 		factory.setErrorHandler(t -> {
-			LOGGER.info("Handling error in listening for messages, error: " + t.getMessage());
+			LOGGER.error("Handling error in listening for messages, error: " + t.getMessage());
 		});
 
 		return factory;

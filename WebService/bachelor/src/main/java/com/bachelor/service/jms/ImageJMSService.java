@@ -17,6 +17,10 @@ private JmsTemplate jmsTemplate;
 
 @Transactional("jmsTransactionManager")
 public void send(Image image){
+	System.out.println("//////////////////");
+	System.out.println(image.getIssuer());
+	System.out.println("//////////////////");
+
 	jmsTemplate.convertAndSend(IMAGE_QUEUE,image);
 }
 
