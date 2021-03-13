@@ -27,21 +27,23 @@ public class ImageIntegrationGetImageFound {
 	@Autowired
 	ImageRepository repo;
 	private static final String URL = "http://localhost:8081/bachelor/image/";
-
 	private Image img = new Image("mockPath","MockStatus",1);
 
 	@Before
 	public void addImage() {
 		this.img = repo.save(img);
 	}
-
+	
 	@Test
 	@DisplayName("Test Get Image Success")
 	public void testGetImageSuccess() throws Exception {
+		//Arrange
 		ResponseEntity<Image> responseEntity = restTemplate.getForEntity(URL + "getImage/?id=" + this.img.getId(),
 				Image.class);
+		//Act
 		int statusCode = responseEntity.getStatusCodeValue();
 		Image image = responseEntity.getBody();
+		//Assert
 		assertEquals(this.img.getId(), image.getId());
 		assertEquals(HttpStatus.OK.value(), statusCode);
 		assertNotNull(image);
@@ -49,7 +51,6 @@ public class ImageIntegrationGetImageFound {
 
 	@After
 	public void removeImage() {
-
 		repo.delete(this.img);
 	}
 

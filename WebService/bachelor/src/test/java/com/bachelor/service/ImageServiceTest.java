@@ -29,24 +29,57 @@ import com.bachelor.utility.files.IFileManipulation;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class ImageServiceTest {
-
 	@Autowired
 	private ImgService service;
-
 	@MockBean
 	private ImageRepository repository;
-
 	@MockBean
 	private IFileManipulation fileManipulater;
 
+	
+	@Test
+	@DisplayName("Test update image success")
+	void testUpdateSuccess() throws NoSuchFileException {
+		// Arrange: Setup mocked service
+		Image mockImage = new Image(1, "mockPath", "Normal", 0);
+		Image updatedImage = new Image(1, "new edited mockPath", "Normal", 0);	
+		doReturn(updatedImage).when(fileManipulater).moveImageToItsAppropriateDirectory(any());
+		doNothing().when(repository).update("", "", 1, 1);
+		// Act
+		Image returnedImage = service.aopUpdate(mockImage);
+		// Assert
+		Assertions.assertNotNull(returnedImage, "The updated image should not be null");
+		Assertions.assertEquals(1, returnedImage.getVersion().intValue(),
+				"The version for the updated image should be encremented by 1");
+	}
+
+	
+	@Test
+	@DisplayName("Test update image does not update when an exception is thrown")
+	void testUpdate()   {
+		// Arrange: Setup mocked service
+		Image mockImage = new Image(1, "mockPath", "Normal", 0);
+		try {
+			// Act
+			Image returnedImage = new Image();
+			doThrow(NoSuchFileException.class).when(fileManipulater).moveImageToItsAppropriateDirectory(any());
+			returnedImage = service.aopUpdate(mockImage);
+			// Assert
+			Assertions.assertEquals(returnedImage.getId(),null, "we should not update if there an exception occurs ");		
+		} catch (NoSuchFileException e) {		
+			e.printStackTrace();
+		}
+	}
+	
 	Image mockImage = new Image(1, "mockPath", "Normal", 1);
+
 
 	@Test
 	@DisplayName("Test findById Success")
 	void testgetImageByIdSuccess() {
 		Image mockImage = new Image(1, "mockPath", "Normal", 1);
 		doReturn(Optional.of(mockImage)).when(repository).findById(1);
-		Optional<Image> returnedImage = service.getImageById(1);
+		Optional<Image> returnedImage = service.aopGetImageById(1);
 		Assertions.assertTrue(returnedImage.isPresent(), "Image was not found");
 		Assertions.assertSame(returnedImage.get(), mockImage, "Image should be the same");
 	}
@@ -55,7 +88,7 @@ public class ImageServiceTest {
 	@DisplayName("Test findById Not Found")
 	void testgetImageByIdNotFound() {
 		doReturn(Optional.empty()).when(repository).findById(1);
-		Optional<Image> returnedImage = service.getImageById(1);
+		Optional<Image> returnedImage = service.aopGetImageById(1);
 		Assertions.assertFalse(returnedImage.isPresent(), "Image was found, when it shouldn't be");
 	}
 
@@ -75,42 +108,13 @@ public class ImageServiceTest {
 	void testSave() {
 		Image mockImage = new Image(1, "mockPath", "Normal", 0);
 		doReturn(mockImage).when(repository).saveAndFlush(any());
-		Image returnedImage = service.saubmitImage(mockImage);
+		Image returnedImage = service.aopSubmitImage(mockImage);
 		Assertions.assertNotNull(returnedImage, "The saved image should not be null");
 		Assertions.assertEquals(0, returnedImage.getVersion().intValue(), "The version for a new product should be 0");
 	}
 
 	
-	@Test
-	@DisplayName("Test update image success")
-	void testUpdateSuccess() throws NoSuchFileException {
-		Image mockImage = new Image(1, "mockPath", "Normal", 0);
-		Image updatedImage = new Image(1, "new edited mockPath", "Normal", 0);
-		doReturn(updatedImage).when(fileManipulater).moveImageToItsAppropriateDirectory(any());
-		doNothing().when(repository).update("", "", 1, 1);
-		Image returnedImage = service.update(mockImage);
-		
-		Assertions.assertNotNull(returnedImage, "The updated image should not be null");
-		Assertions.assertEquals(1, returnedImage.getVersion().intValue(),
-				"The version for the updated image should be 1");
-	}
 
-	@Test
-	@DisplayName("Test update image throws exception")
-	void testUpdate()   {
-		Image mockImage = new Image(1, "mockPath", "Normal", 0);
-		try {
-			Image returnedImage;
-			doThrow(NoSuchFileException.class).when(fileManipulater).moveImageToItsAppropriateDirectory(any());
-			returnedImage = service.update(mockImage);
-			Assertions.assertEquals(returnedImage.getId(),null, "we should not update if there an exception occurs ");		
-		} catch (NoSuchFileException e) {		
-			e.printStackTrace();
-		}
-		
-		
-	
-	}
 
 	@Test
 	@DisplayName("Test insert images to the database Success")

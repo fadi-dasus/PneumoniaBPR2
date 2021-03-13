@@ -52,13 +52,11 @@ public class FileManipulationUtil implements IFileManipulation {
 		} catch (IOException e) {
 			logger.error(e.getStackTrace());
 		}
-
 	}
 
 	public String concatinateString(Image img) {
 		return img.getStatus().equalsIgnoreCase("Normal") ? concatNormal(img.getPhysicalPath())
 				: concatPneumonia(img.getPhysicalPath());
-
 	}
 
 	private String concatPneumonia(String physicalPath) {

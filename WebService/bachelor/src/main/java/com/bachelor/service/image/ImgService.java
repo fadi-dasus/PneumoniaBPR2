@@ -9,15 +9,13 @@ import com.bachelor.model.ImageDirectory;
 
 public interface ImgService {
 
-	Optional<Image> getImageById(int id);
+	Optional<Image> aopGetImageById(int id);
 
 	Iterable<Image> getAllImages();
 
 	List<Image> loadDB(ImageDirectory path);
 
-	Image update(Image img) throws NoSuchFileException;
+	Image aopUpdate(Image img) throws NoSuchFileException;
 
-	void removeAllImagesFromTheTable();
-
-	Image saubmitImage(Image img);
+	Image aopSubmitImage(Image img);
 }

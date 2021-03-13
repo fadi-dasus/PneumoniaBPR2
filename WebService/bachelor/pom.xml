@@ -54,10 +54,7 @@
 			<artifactId>json</artifactId>
 			<version>20160810</version>
 		</dependency>
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-atlas</artifactId>
-		</dependency>
+	
 		 <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>

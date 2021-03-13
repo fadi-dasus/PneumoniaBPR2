@@ -13,12 +13,13 @@ public class TracingAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TracingAspect.class);
 	
 	
-	@Before("execution(* getFoldersPath())")
-	public void entering(JoinPoint joinPoint) {
-		System.out.println("//////////////////////////Hello From Aspect Oriented Programming //////////////////////////////////////////////////");
+	@Before("execution(* aop(..))")
+	public void info(JoinPoint joinPoint) {
 		LOGGER.info("methodEntered Recieved: " + joinPoint.getStaticPart().getSignature().toLongString());
-
 	}
-	
+	@Before("execution(* error(..))")
+	public void error(JoinPoint joinPoint) {
+		LOGGER.error("methodEntered Recieved: " + joinPoint.getStaticPart().getSignature().toLongString());
+	}
 
 }

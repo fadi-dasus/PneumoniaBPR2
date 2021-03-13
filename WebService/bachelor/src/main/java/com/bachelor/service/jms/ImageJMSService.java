@@ -16,11 +16,7 @@ private static final String IMAGE_QUEUE = "img";
 private JmsTemplate jmsTemplate;
 
 @Transactional("jmsTransactionManager")
-public void send(Image image){
-	System.out.println("//////////////////");
-	System.out.println(image.getIssuer());
-	System.out.println("//////////////////");
-
+public void sendToService(Image image){
 	jmsTemplate.convertAndSend(IMAGE_QUEUE,image);
 }
 

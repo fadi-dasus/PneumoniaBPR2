@@ -40,10 +40,61 @@ public class ImageControllerTest {
 	private MockMvc mockMvc;
 
 	@Test
+	@DisplayName("PUT /image/1 - Success")
+	void testImagePutSuccess() throws Exception {
+		
+		// Arrange: Setup mocked service
+		Image puttImage = new Image(1, "mockPath", "Unknown", 1, "me");
+		Image mockgetImage = new Image(1, "mockPath", "Unknown", 1, "me");
+		Image mockupdatedImage = new Image(1, "mockPath", "Normal", 2, "me");
+		doReturn(Optional.of(mockgetImage)).when(service).aopGetImageById(1);
+		doReturn(mockupdatedImage).when(service).aopUpdate(any());
+		
+		// Act
+		mockMvc.perform(put("/bachelor/image/updateStatus")
+				// Assert
+				.contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.IF_MATCH, 1)
+				.content(asJsonString(puttImage))).andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(header().string(HttpHeaders.ETAG, "\"2\""))
+				.andExpect(header().string(HttpHeaders.LOCATION, "/getImage/1")).andExpect(jsonPath("$.id", is(1)))
+				.andExpect(jsonPath("$.physicalPath", is("mockPath"))).andExpect(jsonPath("$.status", is("Normal")))
+				.andExpect(jsonPath("$.version", is(2)));
+	}
+
+	@Test
+	@DisplayName("PUT /image/1 - Version Mismatch")
+	void testImagePutVersionMismatch() throws Exception {
+		// Arrange: Setup mocked service
+		Image puttImage = new Image(1, "mockPath", "Normal");
+		Image mockgetImage = new Image(1, "mockPath", "Normal", 2);
+		doReturn(Optional.of(mockgetImage)).when(service).aopGetImageById(1);
+		
+		// Act
+		mockMvc.perform(put("/bachelor/image/updateStatus")
+				// Assert
+				.contentType(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.IF_MATCH, 1).content(asJsonString(puttImage))).andExpect(status().isConflict());
+	}
+
+	@Test
+	@DisplayName("PUT /product/1 - Not Found")
+	void testImagePutNotFound() throws Exception {
+		// Arrange: Setup mocked service
+		Image puttImage = new Image(1, "mockPath", "Normal");
+		doReturn(Optional.empty()).when(service).aopGetImageById(1);
+		// Act
+		mockMvc.perform(put("/bachelor/image/updateStatus")
+				// Assert
+				.contentType(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.IF_MATCH, 1).content(asJsonString(puttImage))).andExpect(status().isNotFound());
+	}
+
+	@Test
 	@DisplayName("GET /Image/1 - Found")
 	void testGetImageIdFound() throws Exception {
 		Image mockImage = new Image(1, "mockPath", "Normal", 1);
-		doReturn(Optional.of(mockImage)).when(service).getImageById(1);
+		doReturn(Optional.of(mockImage)).when(service).aopGetImageById(1);
 
 		mockMvc.perform(get("/bachelor/image/getImage/?id=1", 1).accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(header().string(HttpHeaders.ETAG, "\"1\""))
@@ -58,7 +109,7 @@ public class ImageControllerTest {
 	@DisplayName("GET /Image/1 - NOT Found")
 	void testGetImageIdNotFound() throws Exception {
 		// Setup our mocked service
-		doReturn(Optional.empty()).when(service).getImageById(1);
+		doReturn(Optional.empty()).when(service).aopGetImageById(1);
 		// Execute the GET request
 		mockMvc.perform(get("/bachelor/image/getImage/{id}", 1).accept(MediaType.APPLICATION_JSON))
 				// Validate the response code and content type
@@ -73,7 +124,8 @@ public class ImageControllerTest {
 		// Setup mocked service
 		Image postImage = new Image("mockPath", "Normal");
 		Image mockImage = new Image(1, "mockPath", "Normal", 1);
-		doReturn(mockImage).when(service).saubmitImage(any());
+
+		doReturn(mockImage).when(service).aopSubmitImage(any());
 
 		mockMvc.perform(post("/bachelor/image/saubmitImage").contentType(MediaType.APPLICATION_JSON)
 				.content(asJsonString(postImage)))
@@ -88,56 +140,6 @@ public class ImageControllerTest {
 				// Validate the returned fields
 				.andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.physicalPath", is("mockPath")))
 				.andExpect(jsonPath("$.status", is("Normal"))).andExpect(jsonPath("$.version", is(1)));
-	}
-
-	@Test
-	@DisplayName("PUT /image/1 - Success")
-	void testImagePutSuccess() throws Exception {
-		// Setup mocked service
-		Image puttImage = new Image(1, "mockPath", "Normal","me");
-		Image mockgetImage = new Image(1, "mockPath", "Normal", 1,"me");
-		Image mockupdatedImage = new Image(1, "mockPath", "Normal", 2,"me");
-
-		doReturn(Optional.of(mockgetImage)).when(service).getImageById(1);
-		doReturn(mockupdatedImage).when(service).update(any());
-		
-		mockMvc.perform(put("/bachelor/image/updateStatus").contentType(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.IF_MATCH, 1).content(asJsonString(puttImage)))
-				.andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON))
-
-				.andExpect(header().string(HttpHeaders.ETAG, "\"2\""))
-				.andExpect(header().string(HttpHeaders.LOCATION, "/getImage/1"))
-
-				.andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.physicalPath", is("mockPath")))
-				.andExpect(jsonPath("$.status", is("Normal"))).andExpect(jsonPath("$.version", is(2)));
-
-	}
-
-	@Test
-	@DisplayName("PUT /image/1 - Version Mismatch")
-	void testImagePutVersionMismatch() throws Exception {
-		Image puttImage = new Image(1, "mockPath", "Normal");
-		Image mockgetImage = new Image(1, "mockPath", "Normal", 2);
-
-		doReturn(Optional.of(mockgetImage)).when(service).getImageById(1);
-		
-		mockMvc.perform(put("/bachelor/image/updateStatus").contentType(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.IF_MATCH, 1).content(asJsonString(puttImage)))
-				.andExpect(status().isConflict());
-	}
-
-	@Test
-	@DisplayName("PUT /product/1 - Not Found")
-	void testImagePutNotFound() throws Exception {
-		// Setup mocked service
-		Image puttImage = new Image(1, "mockPath", "Normal");
-		doReturn(Optional.empty()).when(service).getImageById(1);
-
-		mockMvc.perform(put("/bachelor/image/updateStatus").contentType(MediaType.APPLICATION_JSON)
-				.header(HttpHeaders.IF_MATCH, 1).content(asJsonString(puttImage)))
-
-				// Validate the response code and content type
-				.andExpect(status().isNotFound());
 	}
 
 	@Test

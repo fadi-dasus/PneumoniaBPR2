@@ -26,25 +26,27 @@ public class ImageIntegrationSubmiteImageSuccess {
 	@Autowired
 	ImageRepository repo;
 	private static final String URL = "http://localhost:8081/bachelor/image/";
-
 	private Image image = new Image("test Path", "test Status");
 	private int id = 0;
 
 	@Test
 	@DisplayName("Test Submit Image")
 	public void testSubmitImage() throws Exception {
+		//Arrange
 		ResponseEntity<Image> responseEntity = restTemplate.postForEntity(URL + "/saubmitImage", this.image,
-				Image.class);		
+				Image.class);	
+		//Act
 		int statusCode = responseEntity.getStatusCodeValue();
 		Image resultImage = responseEntity.getBody();
 		this.id = resultImage.getId();
+		//Assert
 		assertNotNull(resultImage);
 		assertEquals(this.image.getPhysicalPath(),
 				resultImage.getPhysicalPath());
 		assertEquals(0, resultImage.getVersion());
 		assertEquals(HttpStatus.CREATED.value(), statusCode);
 	}
-
+	//Tear down 
 	@After
 	public void removeImage() {
 		repo.deleteById(this.id);
